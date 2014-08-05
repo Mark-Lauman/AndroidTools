@@ -129,7 +129,7 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	 *  choiceMode to {@link #CHOICE_MODE_MULTIPLE}, the
 	 *  list allows any number of items to be chosen.</p>
 	 *  <p>Calling this method will clear all current
-	 *  selections. Be sure to call {@link #getSelections()}
+	 *  selections. Be sure to call {@link #getSelectionIds()}
 	 *  before this if you want to preserve your selections.</p>
 	 *  @param choiceMode  One of
 	 *  {@link #CHOICE_MODE_NONE},
@@ -250,11 +250,28 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	}
 	
 	
-	/** Gets all selected items.
+	/** Get the selected item positions.
+	 *  Returns a little bit faster than
+	 *  {@link #getSelectionIds()}.
+	 *  @return The positions of each selected item in
+	 *  the list. (not necessarily the sql ids
+	 *  of the items)                               */
+	public int[] getSelections() {
+		int[] res = new int[mSelected.size()];
+		int i = 0;
+		for(int pos : mSelected) {
+			res[i] = pos;
+			i++;
+		}
+		return res;
+	}
+	
+	
+	/** Gets all selected item ids.
 	 *  @return The ids of each selected item. There is
 	 *  no guaranteed order to this list, users must sort
 	 *  it themselves if necessary.                    */
-	public long[] getSelections() {
+	public long[] getSelectionIds() {
 		long[] res = new long[mSelected.size()];
 		int i = 0;
 		for(Integer pos : mSelected) {
@@ -265,24 +282,51 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	}
 	
 	
-	/** Sets the selected items. Be sure to set the choice
+	/** <p>Sets the selected items. Be sure to set the choice
 	 *  mode (using {@link #setChoiceMode(int)})
-	 *  before calling this!
-	 *  @param selections The sql ids of the items to select.
-	 *  If {@link #CHOICE_MODE_NONE}, nothing is selected.
-	 *  If {@link #CHOICE_MODE_SINGLE}, only the last valid
-	 *  item is selected.
-	 *  If {@link #CHOICE_MODE_MULTIPLE}, all valid items
-	 *  are selected.
-	 *  Items are considered valid if they
-	 *  are in the list.                                 */
-	public void setSelections(long... selections) {
+	 *  before calling this!</p>
+	 *  <p>{@link #CHOICE_MODE_NONE}: nothing is selected.<br>
+	 *  {@link #CHOICE_MODE_SINGLE}: only the last valid
+	 *  item is selected.<br>
+	 *  {@link #CHOICE_MODE_MULTIPLE}: all valid items
+	 *  are selected.</p>
+	 *  <p>Items are considered valid if they
+	 *  are in the list.</p>  
+	 *  @param positions The positions of the new
+	 *  selections in this list (Please not that this may
+	 *  not be the database id of these items, as some
+	 *  ids may have been filtered from the list)       */
+	public void setSelections(int... positions) {
 		deselectAll();
-		if(selections == null
-				|| selections.length == 0
+		if(positions == null
+				|| positions.length == 0
 				|| mChoiceMode == CHOICE_MODE_NONE)
 			return;
-		for(long sel : selections) {
+		for(int pos : positions) {
+			if(0 <= pos) selectItem(pos);
+		}
+	}
+	
+	
+	/** <p>Sets the selected items. Be sure to set the choice
+	 *  mode (using {@link #setChoiceMode(int)})
+	 *  before calling this!</p>
+	 *  <p>{@link #CHOICE_MODE_NONE}: nothing is selected.<br>
+	 *  {@link #CHOICE_MODE_SINGLE}: only the last valid
+	 *  item is selected.<br>
+	 *  {@link #CHOICE_MODE_MULTIPLE}: all valid items
+	 *  are selected.</p>
+	 *  <p>Items are considered valid if they
+	 *  are in the list.</p>  
+	 *  @param ids The sql ids of the items
+	 *  to select.                              */
+	public void setSelections(long... ids) {
+		deselectAll();
+		if(ids == null
+				|| ids.length == 0
+				|| mChoiceMode == CHOICE_MODE_NONE)
+			return;
+		for(long sel : ids) {
 			int pos = getPosition(sel);
 			if(0 <= pos) selectItem(pos);
 		}

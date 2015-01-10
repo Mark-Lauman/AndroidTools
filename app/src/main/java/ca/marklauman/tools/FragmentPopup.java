@@ -34,7 +34,7 @@ import android.widget.TextView;
  *  {@link #LAYOUT_ID}. Be sure to follow the
  *  recommendations provided in this parameter.<br/>
  *  Heavily based off code provided by Roman Nurik here:
- *  {@link http://code.google.com/p/romannurik-code/source/browse/misc/undobar}
+ *  http://code.google.com/p/romannurik-code/source/browse/misc/undobar
  *  @author Mark Lauman                               */
 public class FragmentPopup extends Fragment {
 	
@@ -45,8 +45,7 @@ public class FragmentPopup extends Fragment {
 	 *  (required)</li>
 	 *  <li>A {@link Button} with
 	 *  {@code @android:id/button1} as its id
-	 *  (optional, required to use
-	 *  {@link #showMsgButton()})</li>
+	 *  (optional)</li>
 	 *  <li>A {@link View} used to seperate
 	 *  {@code @android:id/button1} from
 	 *  {@code @android:id/message} with the

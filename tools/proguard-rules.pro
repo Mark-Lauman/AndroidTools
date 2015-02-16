@@ -1,3 +1,4 @@
 -keep class ca.marklauman.tools.** { *; }
 -keep interface ca.marklauman.tools.** { *; }
 -dontwarn ca.marklauman.tools.**
+-keepattributes Signature

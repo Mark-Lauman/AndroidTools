@@ -1,0 +1,4 @@
+<resources>
+    <!-- Application theme. -->
+    <style name="MarkToolsTheme" parent="Theme.AppCompat.Light" />
+</resources>

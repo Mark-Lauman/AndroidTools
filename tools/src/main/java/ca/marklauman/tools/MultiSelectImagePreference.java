@@ -34,13 +34,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-/** An implementation of MultiSelectImagePreference
+/** <p>Deprecated in favor of {@link MultiSelectPreference}</p>
+ *  <p></p>An implementation of MultiSelectImagePreference
  *  for Android 2 with icons included beside
- *  the list items.
+ *  the list items.</p>
  *  @author Mark Lauman & Krzysztof Suszynski.
  *  This is a heavily modified version of
  *  Krzysztof Suszynski's MultiSelectListPreference:
  *  https://gist.github.com/cardil/4754571&nbsp;. */
+@Deprecated
 public class MultiSelectImagePreference extends ListPreference {
 	
 	/** The view used by this preference for items in

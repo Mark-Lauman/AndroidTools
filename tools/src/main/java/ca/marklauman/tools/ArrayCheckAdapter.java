@@ -182,6 +182,12 @@ public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 	public void setIcons(int[] icons) {
 		mIcons = icons;
 	}
+
+
+    /** Get the drawable resource ids for the icons of this adapter. */
+    public int[] getIcons() {
+        return mIcons.clone();
+    }
 	
 	
 	/** Gets the view for a specified position in the list.

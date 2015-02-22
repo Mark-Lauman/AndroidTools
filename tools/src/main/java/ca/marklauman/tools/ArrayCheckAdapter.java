@@ -359,6 +359,15 @@ public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 		else selectAll();
 		return !selected;
 	}
+
+    /** Deselect all selected items, and select all deselected items.
+     *  Choice mode changes to {@link #CHOICE_MODE_MULTIPLE}.      */
+    public void invertSelections() {
+        mChoiceMode = CHOICE_MODE_MULTIPLE;
+        for(int i=0; i<mSelected.size(); i++)
+            mSelected.set(i, !mSelected.get(i));
+    }
+
 	
 	/** Gets all selected items.
 	 *  @return The positions of each selected item.

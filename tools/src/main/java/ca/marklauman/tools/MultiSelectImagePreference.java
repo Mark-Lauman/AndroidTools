@@ -306,22 +306,17 @@ public class MultiSelectImagePreference extends ListPreference {
     
     /** Save a value to memory using the
      *  {@code MultiSelectImagePreference} format.
-     *  @param prefs The preferences to save the
-     *  values into.
-     *  @param key The key associated with this
-     *  preference value.
-     *  @param values The values you wish placed
-     *  there.                                */
+     *  @param prefs The preferences to save the values into.
+     *  @param key The key associated with this preference value.
+     *  @param values The values you wish placed there.        */
     public static void saveValue(SharedPreferences prefs, String key, Collection<? extends String> values) {
     	prefs.edit()
     		 .putString(key, join(values, SEPARATOR))
     		 .commit();
     }
     
-    /** Extract the values stored by a
-     *  {@code MultiSelectImagePreference}.
-     *  (Retrieve the values as a String and pass
-     *  them to this)
+    /** Extract the values stored by a {@code MultiSelectImagePreference}.
+     *  (Retrieve the values as a String and pass them to this)
      *  @param val The value stored in the preferences
      *  @return The values stored inside that.      */
     public static String[] getValues(CharSequence val) {

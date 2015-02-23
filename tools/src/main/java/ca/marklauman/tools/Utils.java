@@ -13,7 +13,6 @@
  * limitations under the License.                                        */
 package ca.marklauman.tools;
 
-@SuppressWarnings("ALL")
 public abstract class Utils {
 
     /** Round a number to a given number of places
@@ -33,26 +32,26 @@ public abstract class Utils {
         return Math.round(trans * number) / trans;
     }
 
-    /** Join all the vals together into one string.
-     *  @param seperator The string used to seprate the individual values.
-     *  @param vals The values to place into the string. Values will be
-     *              converted by their class' toString() method.
+    /** Join all the values together into one string.
+     *  @param separator The string used to separate the individual values.
+     *  @param values The values to place into the string. Values will be
+     *                converted by their class' toString() method.
      *  @return A String made of all the values joined together, with each
-     *          item seperated from its neighbours by the seperator.
-     *          The seperator will not appear at the beginning or end
+     *          item separated from its neighbours by the separator.
+     *          The separator will not appear at the beginning or end
      *          of the result.                                     */
-    public static <T> String join(String seperator, T... vals) {
-        // input sanitization
-        if(vals == null) return "" + null;
-        if(seperator == null) seperator = "" + null;
+    public static <T> String join(String separator, T[] values) {
+        // sanitize inputs
+        if(values == null) return "" + null;
+        if(separator == null) separator = "" + null;
 
         // join the strings
         String res = "";
-        for(T val : vals)
-            res += seperator + val;
+        for(T val : values)
+            res += separator + val;
 
-        // remove the excess seperator at the start and return
-        if(res.length() < seperator.length()) return "";
-        return res.substring(seperator.length());
+        // remove the excess separator at the start and return
+        if(res.length() < separator.length()) return "";
+        return res.substring(separator.length());
     }
 }

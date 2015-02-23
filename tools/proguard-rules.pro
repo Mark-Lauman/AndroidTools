@@ -1,4 +1,5 @@
 -keep class ca.marklauman.tools.** { *; }
 -keep interface ca.marklauman.tools.** { *; }
 -dontwarn ca.marklauman.tools.**
+-keep class com.example.android.common.view.SlidingTabLayout
 -keepattributes Signature

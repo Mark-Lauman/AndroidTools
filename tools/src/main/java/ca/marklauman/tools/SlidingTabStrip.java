@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.example.android.common.view;
+package ca.marklauman.tools;
 
 import android.R;
 import android.content.Context;

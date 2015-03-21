@@ -1,6 +1,5 @@
 -keep class ca.marklauman.tools.** { *; }
 -keep interface ca.marklauman.tools.** { *; }
 -keep public interface ca.marklauman.tools.QueryDialogBuilder$QueryListener { *; }
--keep class com.example.android.common.view.SlidingTabLayout
--keep public interface com.example.android.common.view.SlidingTabLayout$TabColorizer { *; }
+-keep public interface ca.marklauman.tools.SlidingTabLayout$TabColorizer { *; }
 -keepattributes Signature, InnerClasses

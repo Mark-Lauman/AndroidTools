@@ -1,6 +1,5 @@
 -keep class ca.marklauman.tools.** { *; }
 -keep interface ca.marklauman.tools.** { *; }
--keep interface ca.marklauman.tools.QueryDialogBuilder$QueryListener {*;}
--dontwarn ca.marklauman.tools.**
+-keep interface ca.marklauman.tools.QueryDialogBuilder.QueryListener {*;}
 -keep class com.example.android.common.view.SlidingTabLayout
 -keepattributes Signature

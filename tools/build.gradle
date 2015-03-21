@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
-def libVersionCode = 13
-def libVersion = "1.12"
+def libVersionCode = 14
+def libVersion = "2.0"
 
 android {
     compileSdkVersion 21
@@ -17,10 +17,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
-            proguardFiles 'proguard-android.txt'
+            minifyEnabled false
         }
     }
 }

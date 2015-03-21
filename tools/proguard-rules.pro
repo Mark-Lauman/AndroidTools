@@ -1,5 +1,0 @@
--keep class ca.marklauman.tools.** { *; }
--keep interface ca.marklauman.tools.** { *; }
--keep public interface ca.marklauman.tools.QueryDialogBuilder$QueryListener { *; }
--keep public interface ca.marklauman.tools.SlidingTabLayout$TabColorizer { *; }
--keepattributes Signature, InnerClasses

@@ -61,7 +61,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
          * @return return the color of the divider drawn to the right of {@code position}.
          */
         int getDividerColor(int position);
-
     }
 
     private static final int TITLE_OFFSET_DIPS = 24;
@@ -69,6 +68,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
 
     private int mTitleOffset;
+    private Integer mTextColor;
 
     private int mTabViewLayoutId;
     private int mTabViewTextViewId;
@@ -98,7 +98,24 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         mTabStrip = new SlidingTabStrip(context);
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
+        if(attrs != null) {
+            int txtCol = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android",
+                                                         "textColor", 0);
+            if(txtCol == 0) mTextColor = null;
+            else mTextColor = context.getResources().getColor(txtCol);
+        }
+
+        if(isInEditMode()) displaySampleData(context);
     }
+
+
+    private void displaySampleData(Context c) {
+        ViewPager pager = new ViewPager(c);
+        pager.setAdapter(new SampleAdapter());
+        this.setViewPager(pager);
+    }
+
 
     /**
      * Set the custom {@link TabColorizer} to be used.
@@ -172,6 +189,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
+        if(mTextColor != null) textView.setTextColor(mTextColor);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // If we're running on Honeycomb or newer, then we can use the Theme's
@@ -311,4 +329,20 @@ public class SlidingTabLayout extends HorizontalScrollView {
         }
     }
 
+    private static class SampleAdapter extends PagerAdapter {
+        private final String[] titles = {"Tab 1", "Tab 2", "Tab 3"};
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+
+        public boolean isViewFromObject(View view, Object object) {
+            return false;
+        }
+
+        public int getCount() {
+            return 3;
+        }
+    }
 }

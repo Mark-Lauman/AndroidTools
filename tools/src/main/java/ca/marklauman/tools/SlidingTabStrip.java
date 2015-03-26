@@ -1,6 +1,4 @@
-/* This class is not accessible in the AndroidTools aar
- *
- * Copyright (C) 2013 The Android Open Source Project
+/* Copyright (C) 2013 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +49,7 @@ class SlidingTabStrip extends LinearLayout {
     private float mSelectionOffset;
 
     private SlidingTabLayout.TabColorizer mCustomTabColorizer;
-    private final SimpleTabColorizer mDefaultTabColorizer;
+    private final SlidingTabLayout.SimpleTabColorizer mDefaultTabColorizer;
 
     SlidingTabStrip(Context context) {
         this(context, null);
@@ -70,7 +68,7 @@ class SlidingTabStrip extends LinearLayout {
         int mDefaultBottomBorderColor = setColorAlpha(themeForegroundColor,
                 DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
 
-        mDefaultTabColorizer = new SimpleTabColorizer();
+        mDefaultTabColorizer = new SlidingTabLayout.SimpleTabColorizer();
         mDefaultTabColorizer.setIndicatorColors(DEFAULT_SELECTED_INDICATOR_COLOR);
         mDefaultTabColorizer.setDividerColors(setColorAlpha(themeForegroundColor,
                 DEFAULT_DIVIDER_COLOR_ALPHA));
@@ -180,28 +178,5 @@ class SlidingTabStrip extends LinearLayout {
         float g = (Color.green(color1) * ratio) + (Color.green(color2) * inverseRation);
         float b = (Color.blue(color1) * ratio) + (Color.blue(color2) * inverseRation);
         return Color.rgb((int) r, (int) g, (int) b);
-    }
-
-    private static class SimpleTabColorizer implements SlidingTabLayout.TabColorizer {
-        private int[] mIndicatorColors;
-        private int[] mDividerColors;
-
-        @Override
-        public final int getIndicatorColor(int position) {
-            return mIndicatorColors[position % mIndicatorColors.length];
-        }
-
-        @Override
-        public final int getDividerColor(int position) {
-            return mDividerColors[position % mDividerColors.length];
-        }
-
-        void setIndicatorColors(int... colors) {
-            mIndicatorColors = colors;
-        }
-
-        void setDividerColors(int... colors) {
-            mDividerColors = colors;
-        }
     }
 }

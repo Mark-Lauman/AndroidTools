@@ -16,6 +16,7 @@
 package ca.marklauman.tools;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
@@ -68,7 +69,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
 
     private int mTitleOffset;
-    private Integer mTextColor;
 
     private int mTabViewLayoutId;
     private int mTabViewTextViewId;
@@ -77,6 +77,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
 
     private final SlidingTabStrip mTabStrip;
+    private Integer[] mTextColors;
 
     public SlidingTabLayout(Context context) {
         this(context, null);
@@ -88,6 +89,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     public SlidingTabLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        mTextColors = new Integer[1];
+        mTextColors[0] = null;
 
         // Disable the Scroll Bar
         setHorizontalScrollBarEnabled(false);
@@ -100,10 +103,16 @@ public class SlidingTabLayout extends HorizontalScrollView {
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
         if(attrs != null) {
-            int txtCol = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android",
-                                                         "textColor", 0);
-            if(txtCol == 0) mTextColor = null;
-            else mTextColor = context.getResources().getColor(txtCol);
+            final String android = "http://schemas.android.com/apk/res/android";
+            final String resAuto = "http://schemas.android.com/apk/res-auto";
+            Resources res = getResources();
+
+            int col = attrs.getAttributeResourceValue(android, "textColor", 0);
+            if(col != 0) setTextColors(res.getColor(col));
+            col = attrs.getAttributeResourceValue(resAuto, "dividerColor", 0);
+            if(col != 0) setDividerColors(res.getColor(col));
+            col = attrs.getAttributeResourceValue(resAuto, "indicatorColor", 0);
+            if(col != 0) setSelectedIndicatorColors(res.getColor(col));
         }
 
         if(isInEditMode()) displaySampleData(context);
@@ -142,6 +151,18 @@ public class SlidingTabLayout extends HorizontalScrollView {
      */
     public void setDividerColors(int... colors) {
         mTabStrip.setDividerColors(colors);
+    }
+
+    /** Sets the colors to be used for tab text (if you are using the default tab views).
+     *  These colors are treated as a circular array. Providing one color will mean that
+     *  all tabs are indicated with the same color. A null color is default text color. */
+    public void setTextColors(Integer... colors) {
+        mTextColors = colors;
+    }
+
+    /** Gets the text color at a given position */
+    private Integer getTextColor(int position) {
+        return mTextColors[position % mTextColors.length];
     }
 
     /**
@@ -184,12 +205,12 @@ public class SlidingTabLayout extends HorizontalScrollView {
      * Create a default view to be used for tabs. This is called if a custom tab view is not set via
      * {@link #setCustomTabView(int, int)}.
      */
-    protected TextView createDefaultTabView(Context context) {
+    protected TextView createDefaultTabView(Context context, Integer textColor) {
         TextView textView = new TextView(context);
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
-        if(mTextColor != null) textView.setTextColor(mTextColor);
+        if(textColor != null) textView.setTextColor(textColor);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // If we're running on Honeycomb or newer, then we can use the Theme's
@@ -227,7 +248,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             if (tabView == null) {
-                tabView = createDefaultTabView(getContext());
+                tabView = createDefaultTabView(getContext(), getTextColor(i));
             }
 
             if (tabTitleView == null && TextView.class.isInstance(tabView)) {
@@ -343,6 +364,30 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         public int getCount() {
             return 3;
+        }
+    }
+
+
+    public static class SimpleTabColorizer implements TabColorizer {
+        private int[] mIndicatorColors;
+        private int[] mDividerColors;
+
+        @Override
+        public final int getIndicatorColor(int position) {
+            return mIndicatorColors[position % mIndicatorColors.length];
+        }
+
+        @Override
+        public final int getDividerColor(int position) {
+            return mDividerColors[position % mDividerColors.length];
+        }
+
+        void setIndicatorColors(int... colors) {
+            mIndicatorColors = colors;
+        }
+
+        void setDividerColors(int... colors) {
+            mDividerColors = colors;
         }
     }
 }

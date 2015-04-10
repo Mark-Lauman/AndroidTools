@@ -250,11 +250,9 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	
 	
 	/** Get the selected item positions.
-	 *  Returns a little bit faster than
-	 *  {@link #getSelectionIds()}.
+	 *  Returns a little bit faster than {@link #getSelectionIds()}.
 	 *  @return The positions of each selected item in
-	 *  the list. (not necessarily the sql ids
-	 *  of the items)                               */
+	 *  the list. (not necessarily the sql ids of the items)                               */
 	public int[] getSelections() {
 		int[] res = new int[mSelected.size()];
 		int i = 0;
@@ -264,6 +262,22 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		}
 		return res;
 	}
+
+    /** Get the selected item positions as Integers (not ints).
+     *  Returns at the same speed as {@link #getSelections()}
+     *  as it is computationally identical.
+     *  @return The positions of each selected item in
+     *  the list. (not necessarily the sql ids
+     *  of the items)                               */
+    public Integer[] getIntegerSelections() {
+        Integer[] res = new Integer[mSelected.size()];
+        int i = 0;
+        for(int pos : mSelected) {
+            res[i] = pos;
+            i++;
+        }
+        return res;
+    }
 	
 	
 	/** Gets all selected item ids.
@@ -279,6 +293,21 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		}
 		return res;
 	}
+
+    /** Gets all selected item ids as Longs (not longs).
+     *  Computationally identical to {@link #getSelectionIds()}.
+     *  @return The ids of each selected item. There is
+     *  no guaranteed order to this list, users must sort
+     *  it themselves if necessary.                    */
+    public Long[] getLongSelectionIds() {
+        Long[] res = new Long[mSelected.size()];
+        int i = 0;
+        for(Integer pos : mSelected) {
+            res[i] = getItemId(pos);
+            i++;
+        }
+        return res;
+    }
 	
 	
 	/** <p>Sets the selected items. Be sure to set the choice

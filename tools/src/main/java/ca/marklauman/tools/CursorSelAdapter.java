@@ -350,13 +350,33 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	 *  to select.                              */
 	public void setSelections(long... ids) {
 		deselectAll();
-		if(ids == null
-				|| ids.length == 0
-				|| mChoiceMode == CHOICE_MODE_NONE)
+		if(ids == null || ids.length == 0 || mChoiceMode == CHOICE_MODE_NONE)
 			return;
 		for(long sel : ids) {
 			int pos = getPosition(sel);
 			if(0 <= pos) selectItem(pos);
 		}
 	}
+
+    /** <p>Sets the selected items. Be sure to set the choice
+     *  mode (using {@link #setChoiceMode(int)})
+     *  before calling this!</p>
+     *  <p>{@link #CHOICE_MODE_NONE}: nothing is selected.<br>
+     *  {@link #CHOICE_MODE_SINGLE}: only the last valid
+     *  item is selected.<br>
+     *  {@link #CHOICE_MODE_MULTIPLE}: all valid items
+     *  are selected.</p>
+     *  <p>Items are considered valid if they
+     *  are in the list.</p>
+     *  @param ids The sql ids of the items
+     *  to select.                              */
+    public void setSelections(Long... ids) {
+        deselectAll();
+        if(ids == null || ids.length == 0 || mChoiceMode == CHOICE_MODE_NONE)
+            return;
+        for(long sel : ids) {
+            int pos = getPosition(sel);
+            if(0 <= pos) selectItem(pos);
+        }
+    }
 }

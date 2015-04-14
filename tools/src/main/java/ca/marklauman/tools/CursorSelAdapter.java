@@ -18,6 +18,7 @@ import java.util.HashSet;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,26 +50,22 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	/** Current choice mode.   */
 	private int mChoiceMode = CHOICE_MODE_NONE;
 	/** Current selections.    */
-	protected HashSet<Integer> mSelected = new HashSet<>();
+	protected HashSet<Long> mSelected = new HashSet<>();
+    /** The column id for the _id column */
+    protected int _id;
 	
 	
 	/** Standard constructor.
-	 *  @param context The context where the ListView
-	 *  associated with this CursorSelAdapter is
-	 *  running.
-	 *  @param layout resource identifier of a layout file
-	 *  that defines the views for this list item. The
-	 *  layout file should include at least those named
-	 *  views defined in "to"
-	 *  @param from A list of column names representing
-	 *  the data to bind to the UI. Can be null if the
-	 *  cursor is not available yet.
-	 *  @param to The views that should display column in
-	 *  the "from" parameter. These should all be
-	 *  TextViews. The first N views in this list are given
-	 *  the values of the first N columns in the from
-	 *  parameter. Can be null if the cursor is not
-	 *  available yet.                                 */
+	 *  @param context The application context
+	 *  @param layout resource identifier of a layout file that defines
+     *  the views for this list item. The layout file should include at
+     *  least those named views defined in "to"
+	 *  @param from A list of column names representing the data to bind
+     *  to the UI. Can be null if the cursor is not available yet.
+	 *  @param to The views that should display column in the "from" parameter.
+     *  These should all be TextViews. The first N views in this list are given
+	 *  the values of the first N columns in the from parameter. Can be null
+     *  if the cursor is not available yet. */
 	public CursorSelAdapter(Context context, int layout,
 			                String[] from, int[] to) {
 		super(context, layout, null, from, to, 0);
@@ -79,36 +76,39 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 								  .getColor(SEL_COLOR);
 		}
 	}
+
+
+    @Override
+    public void changeCursor(Cursor cursor) {
+        super.changeCursor(cursor);
+        if(cursor != null) _id = cursor.getColumnIndex(BaseColumns._ID);
+    }
 	
 	
-	/** Gets the view for a specified position in the list.
-	 *  In {@link SimpleCursorAdapter}s, this method is
-	 *  not responsible for the inflation of the view, just
-	 *  its retrieval and refreshing. Inflation is done in
-	 *  {@link #newView(Context, Cursor, ViewGroup)}.
+	/** Gets the view for a specified position in the list. In
+     *  {@link SimpleCursorAdapter}s, this method is not responsible for the
+     *  inflation of the view, just its retrieval and refreshing.
+     *  Inflation is done in {@link #newView(Context, Cursor, ViewGroup)}.
 	 *  @param position The position of the item within the
 	 *  adapter's data set of the item whose view we want.
 	 *  @param convertView The old view to reuse, if possible.
-	 *  @param parent The parent that this view will
-	 *  eventually be attached to
-	 *  @return A View corresponding to the data at
-	 *  the specified position.                             */
+	 *  @param parent The parent that this view will eventually be attached to
+	 *  @return A View corresponding to the data at the specified position. */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View res = super.getView(position, convertView, parent);
-		if(mSelected.contains(position))
+        mCursor.moveToPosition(position);
+		if(mSelected.contains(mCursor.getLong(_id)))
 			res.setBackgroundColor(COLOR_SELECT);
-		else
-			res.setBackgroundColor(COLOR_NORM);
+		else res.setBackgroundColor(COLOR_NORM);
 		return res;
 	}
 	
 	
 	/** Get the item position paired with this id.
-	 *  @param id The sql id of the item.
-	 *  (from the "_id" column)
+	 *  @param id The id of the item according to the cursor.
 	 *  @return The position of that item in the list,
-	 *  or -1 if no items exist with that id.       */
+	 *  or -1 if no item exists with that id. */
 	public int getPosition(long id) {
 		if(mCursor == null || !mCursor.moveToFirst())
 			return -1;
@@ -120,21 +120,17 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	}
 	
 	
-	/** <p>Defines the choice behavior for the Adapter. By
-	 *  default, Adapters do not have any choice behavior
-	 *  ({@link #CHOICE_MODE_NONE}).
-	 *  By setting the choiceMode to
-	 *  {@link #CHOICE_MODE_SINGLE}, the Adapter allows up
-	 *  to one item to be in a chosen state. By setting the
-	 *  choiceMode to {@link #CHOICE_MODE_MULTIPLE}, the
-	 *  list allows any number of items to be chosen.</p>
-	 *  <p>Calling this method will clear all current
-	 *  selections. Be sure to call {@link #getSelectionIds()}
-	 *  before this if you want to preserve your selections.</p>
-	 *  @param choiceMode  One of
-	 *  {@link #CHOICE_MODE_NONE},
-	 *  {@link #CHOICE_MODE_SINGLE}, or
-	 *  {@link #CHOICE_MODE_MULTIPLE}.				*/
+	/** <p>Defines the choice behavior for the Adapter. By default,
+     *  Adapters do not have any choice behavior ({@link #CHOICE_MODE_NONE}).
+	 *  By setting the choiceMode to {@link #CHOICE_MODE_SINGLE},
+     *  the Adapter allows up to one item to be selected. By setting the
+	 *  choiceMode to {@link #CHOICE_MODE_MULTIPLE}, the list allows any
+     *  number of items to be chosen.</p>
+	 *  <p>Calling this method will deselect all items. Be sure to call
+     *  {@link #getSelected()} before this if you want to preserve
+     *  your selections.</p>
+	 *  @param choiceMode  One of {@link #CHOICE_MODE_NONE},
+	 *  {@link #CHOICE_MODE_SINGLE}, or {@link #CHOICE_MODE_MULTIPLE}. */
 	public void setChoiceMode(int choiceMode) {
 		switch(choiceMode) {
 		case CHOICE_MODE_NONE:		case CHOICE_MODE_SINGLE:
@@ -147,7 +143,7 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	}
 	
 	
-	/** Gets the current ChoiceMode of this CursorSelAdapter.
+	/** Gets the current choice mode of this CursorSelAdapter.
 	 *  @return One of {@link #CHOICE_MODE_NONE},
 	 *  {@link #CHOICE_MODE_SINGLE}, or
 	 *  {@link #CHOICE_MODE_MULTIPLE}.                      */
@@ -156,11 +152,9 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	}
 	
 	
-	/** Select this item. If it is already selected
-	 *  it remains so.
-	 *  @param position The position of the row in the
-	 *  list.										*/
-	public void selectItem(int position) {
+	/** Select this item. If it is already selected it remains so.
+	 *  @param id The id of the item in the cursor. */
+	public void selectItem(long id) {
 		switch(mChoiceMode) {
 		case CHOICE_MODE_NONE:
 			return;
@@ -169,27 +163,24 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		case CHOICE_MODE_MULTIPLE: break;
 		default: 	throw new IllegalStateException("Choice Mode is an invalid value: " + mChoiceMode);
 		}
-		mSelected.add(position);
+		mSelected.add(id);
 		notifyDataSetChanged();
 	}
 	
 	
-	/** Deselects this item. If it is already deselected
-	 *  then it remains so.
-	 *  @param position The position of the row in the
-	 *  list.                                        */
-	public void deselectItem(int position) {
-		mSelected.remove(position);
+	/** Deselects this item. If it is already deselected then it remains so.
+     *  @param id The id of the item in the cursor. */
+	public void deselectItem(long id) {
+		mSelected.remove(id);
 		notifyDataSetChanged();
 	}
 	
 	
-	/** If the list item at the given location is selected,
-	 *  deselects it. If it is not selected, selects it.
-	 *  @param position The position of the row in the list.
-	 *  @return {@code true} if the item is selected,
-	 *  {@code false} otherwise.                   */
-	public boolean toggleItem(int position) {
+	/** If the list item at the given location is selected, deselects it.
+     *  If it is not selected, selects it.
+	 *  @param id The id of the item in the cursor.
+	 *  @return {@code true} if the item is selected, {@code false} otherwise. */
+	public boolean toggleItem(long id) {
 		switch(mChoiceMode) {
 		case CHOICE_MODE_NONE:
 			return false;
@@ -198,26 +189,25 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		case CHOICE_MODE_MULTIPLE: break;
 		default: 	throw new IllegalStateException("Choice Mode is an invalid value: " + mChoiceMode);
 		}
-		
-		if(mSelected.contains(position))
-			mSelected.remove(position);
-		else mSelected.add(position);
-		
+
+        boolean selected = mSelected.contains(id);
+		if(selected) mSelected.remove(id);
+		else mSelected.add(id);
 		notifyDataSetChanged();
-		return mSelected.contains(position);
+		return !selected;
 	}
 	
 	
-	/** All items are selected.
-	 *  Choice mode changes to
-	 *  {@link #CHOICE_MODE_MULTIPLE}. */
+	/** All items are selected. Choice mode changes to
+     *  {@link #CHOICE_MODE_MULTIPLE}. */
 	public void selectAll() {
 		mChoiceMode = CHOICE_MODE_MULTIPLE;
 		mSelected.clear();
 		if(mCursor == null) return;
-		
-		for(int i = 0; i < mCursor.getCount(); i++)
-			mSelected.add(i);
+
+        mCursor.moveToPosition(-1);
+        while(mCursor.moveToNext())
+            mSelected.add(mCursor.getLong(_id));
 		notifyDataSetChanged();
 	}
 	
@@ -229,18 +219,18 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	}
 	
 	
-	/** All items in the list are selected. If they are already
-	 *  all selected, then everything is deselected instead.
-	 *  Choice mode changes to {@link #CHOICE_MODE_MULTIPLE}
-	 *  regardless.
-	 * @return {@code true} if all items are selected.   */
+	/** All items in the list are selected. If they are already all selected,
+     *  then everything is deselected instead.
+	 *  Choice mode changes to {@link #CHOICE_MODE_MULTIPLE} regardless.
+	 *  @return {@code true} if all items are selected.   */
 	public boolean toggleAll() {
 		mChoiceMode = CHOICE_MODE_MULTIPLE;
 		
 		// check all items are selected
 		boolean selected = true;
-		for(int i = 0; selected && i < mCursor.getCount(); i++)
-			selected = mSelected.contains(i);
+        mCursor.moveToPosition(-1);
+        while(mCursor.moveToNext())
+            selected = mSelected.contains(mCursor.getLong(_id));
 		
 		// apply the change
 		if(selected) deselectAll();
@@ -250,31 +240,37 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	
 	
 	/** Get the selected item positions.
-	 *  Returns a little bit faster than {@link #getSelectionIds()}.
+	 *  Returns a little bit slower than {@link #getSelected()}.
 	 *  @return The positions of each selected item in
 	 *  the list. (not necessarily the sql ids of the items)                               */
-	public int[] getSelections() {
+	public int[] getSelectedPos() {
 		int[] res = new int[mSelected.size()];
-		int i = 0;
-		for(int pos : mSelected) {
-			res[i] = pos;
-			i++;
-		}
+        mCursor.moveToPosition(-1);
+        int i = 0;
+        while(mCursor.moveToNext()) {
+            if(mSelected.contains(mCursor.getLong(_id))) {
+                res[i] = mCursor.getPosition();
+                i++;
+            }
+        }
 		return res;
 	}
 
-    /** Get the selected item positions as Integers (not ints).
-     *  Returns at the same speed as {@link #getSelections()}
+    /** Get the selected item positions as Integers (non-primitive).
+     *  Returns at the same speed as {@link #getSelectedPos()}
      *  as it is computationally identical.
      *  @return The positions of each selected item in
      *  the list. (not necessarily the sql ids
      *  of the items)                               */
-    public Integer[] getIntegerSelections() {
+    public Integer[] getSelectedPosInt() {
         Integer[] res = new Integer[mSelected.size()];
+        mCursor.moveToPosition(-1);
         int i = 0;
-        for(int pos : mSelected) {
-            res[i] = pos;
-            i++;
+        while(mCursor.moveToNext()) {
+            if(mSelected.contains(mCursor.getLong(_id))) {
+                res[i] = mCursor.getPosition();
+                i++;
+            }
         }
         return res;
     }
@@ -284,99 +280,49 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	 *  @return The ids of each selected item. There is
 	 *  no guaranteed order to this list, users must sort
 	 *  it themselves if necessary.                    */
-	public long[] getSelectionIds() {
+	public long[] getSelected() {
 		long[] res = new long[mSelected.size()];
-		int i = 0;
-		for(Integer pos : mSelected) {
-			res[i] = getItemId(pos);
-			i++;
+        int i = 0;
+        for(long id : mSelected) {
+            res[i] = id;
+            i++;
 		}
 		return res;
 	}
 
     /** Gets all selected item ids as Longs (not longs).
-     *  Computationally identical to {@link #getSelectionIds()}.
+     *  Computationally identical to {@link #getSelected()}.
      *  @return The ids of each selected item. There is
      *  no guaranteed order to this list, users must sort
      *  it themselves if necessary.                    */
-    public Long[] getLongSelectionIds() {
-        Long[] res = new Long[mSelected.size()];
-        int i = 0;
-        for(Integer pos : mSelected) {
-            res[i] = getItemId(pos);
-            i++;
-        }
-        return res;
+    public Long[] getSelectedLong() {
+        return (Long[]) mSelected.toArray();
     }
 	
 	
-	/** <p>Sets the selected items. Be sure to set the choice
-	 *  mode (using {@link #setChoiceMode(int)})
-	 *  before calling this!</p>
+	/** <p>Sets the selected items. Be sure to set the choice mode
+     *  (using {@link #setChoiceMode(int)}) before calling this!</p>
 	 *  <p>{@link #CHOICE_MODE_NONE}: nothing is selected.<br>
-	 *  {@link #CHOICE_MODE_SINGLE}: only the last valid
-	 *  item is selected.<br>
-	 *  {@link #CHOICE_MODE_MULTIPLE}: all valid items
-	 *  are selected.</p>
-	 *  <p>Items are considered valid if they
-	 *  are in the list.</p>  
-	 *  @param positions The positions of the new
-	 *  selections in this list (Please not that this may
-	 *  not be the database id of these items, as some
-	 *  ids may have been filtered from the list)       */
-	public void setSelections(int... positions) {
-		deselectAll();
-		if(positions == null
-				|| positions.length == 0
-				|| mChoiceMode == CHOICE_MODE_NONE)
-			return;
-		for(int pos : positions) {
-			if(0 <= pos) selectItem(pos);
-		}
-	}
-	
-	
-	/** <p>Sets the selected items. Be sure to set the choice
-	 *  mode (using {@link #setChoiceMode(int)})
-	 *  before calling this!</p>
-	 *  <p>{@link #CHOICE_MODE_NONE}: nothing is selected.<br>
-	 *  {@link #CHOICE_MODE_SINGLE}: only the last valid
-	 *  item is selected.<br>
-	 *  {@link #CHOICE_MODE_MULTIPLE}: all valid items
-	 *  are selected.</p>
-	 *  <p>Items are considered valid if they
-	 *  are in the list.</p>  
-	 *  @param ids The sql ids of the items
-	 *  to select.                              */
-	public void setSelections(long... ids) {
+	 *  {@link #CHOICE_MODE_SINGLE}: only the last item is selected.<br>
+	 *  {@link #CHOICE_MODE_MULTIPLE}: all specified items are selected.</p>
+	 *  @param ids The ids of the new selections as per the cursor. */
+	public void setSelected(long... ids) {
 		deselectAll();
 		if(ids == null || ids.length == 0 || mChoiceMode == CHOICE_MODE_NONE)
 			return;
-		for(long sel : ids) {
-			int pos = getPosition(sel);
-			if(0 <= pos) selectItem(pos);
-		}
+		for(long id : ids) selectItem(id);
 	}
 
-    /** <p>Sets the selected items. Be sure to set the choice
-     *  mode (using {@link #setChoiceMode(int)})
-     *  before calling this!</p>
+    /** <p>Sets the selected items. Be sure to set the choice mode
+     *  (using {@link #setChoiceMode(int)}) before calling this!</p>
      *  <p>{@link #CHOICE_MODE_NONE}: nothing is selected.<br>
-     *  {@link #CHOICE_MODE_SINGLE}: only the last valid
-     *  item is selected.<br>
-     *  {@link #CHOICE_MODE_MULTIPLE}: all valid items
-     *  are selected.</p>
-     *  <p>Items are considered valid if they
-     *  are in the list.</p>
-     *  @param ids The sql ids of the items
-     *  to select.                              */
-    public void setSelections(Long... ids) {
+     *  {@link #CHOICE_MODE_SINGLE}: only the last item is selected.<br>
+     *  {@link #CHOICE_MODE_MULTIPLE}: all specified items are selected.</p>
+     *  @param ids The ids of the new selections as per the cursor. */
+    public void setSelected(Long... ids) {
         deselectAll();
         if(ids == null || ids.length == 0 || mChoiceMode == CHOICE_MODE_NONE)
             return;
-        for(long sel : ids) {
-            int pos = getPosition(sel);
-            if(0 <= pos) selectItem(pos);
-        }
+        for(long id : ids) selectItem(id);
     }
 }

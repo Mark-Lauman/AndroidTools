@@ -18,6 +18,7 @@ import java.util.HashSet;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.provider.BaseColumns;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
@@ -40,11 +41,14 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	public static final int CHOICE_MODE_SINGLE = ListView.CHOICE_MODE_SINGLE;
 	/** The adapter allows multiple choices.  */
 	public static final int CHOICE_MODE_MULTIPLE = ListView.CHOICE_MODE_MULTIPLE;
+
+    /** Default background color of a selected list item. */
+    private static int backDefSelect = -1;
 	
-	/** Background color of a tab in its normal state */
-	private static int COLOR_NORM = -1;
-	/** Background color of a tab when selected */
-	private static int COLOR_SELECT = -1;
+	/** Background of an unselected list item. */
+	private Drawable backNorm;
+	/** Background color of a selected list item. */
+	private int backSelect = -1;
 	
 	
 	/** Current choice mode.   */
@@ -69,12 +73,11 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	public CursorSelAdapter(Context context, int layout,
 			                String[] from, int[] to) {
 		super(context, layout, null, from, to, 0);
-		if(COLOR_NORM == -1) {
-			COLOR_NORM	 = context.getResources()
-								  .getColor(android.R.color.transparent);
-			COLOR_SELECT = context.getResources()
-								  .getColor(SEL_COLOR);
-		}
+        backNorm = View.inflate(context, layout, null).getBackground();
+		if(backDefSelect == -1)
+            backDefSelect = context.getResources()
+								   .getColor(SEL_COLOR);
+        backSelect = backDefSelect;
 	}
 
 
@@ -99,8 +102,11 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		View res = super.getView(position, convertView, parent);
         mCursor.moveToPosition(position);
 		if(mSelected.contains(mCursor.getLong(_id)))
-			res.setBackgroundColor(COLOR_SELECT);
-		else res.setBackgroundColor(COLOR_NORM);
+			res.setBackgroundColor(backSelect);
+		else if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN)
+            //noinspection deprecation
+            res.setBackgroundDrawable(backNorm);
+        else res.setBackground(backNorm);
 		return res;
 	}
 	
@@ -196,6 +202,12 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		notifyDataSetChanged();
 		return !selected;
 	}
+
+
+    /** Set the background used on selected items */
+    public void setSelectionColor(int color) {
+        backSelect = color;
+    }
 	
 	
 	/** All items are selected. Choice mode changes to

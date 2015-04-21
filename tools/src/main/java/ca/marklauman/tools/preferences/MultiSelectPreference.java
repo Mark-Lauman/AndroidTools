@@ -128,9 +128,6 @@ public class MultiSelectPreference extends LinearLayout {
 
             // Basic adapter setup
             adapter = new ArrayCheckAdapter<>(c, R.layout.list_item_check, entries);
-            int[] entryIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
-            if(entryIcons != null) adapter.setIcons(entryIcons);
-
             boolean inverted = ta.getBoolean(R.styleable.MultiSelectPreference_inverted, false);
 
             // Basic selections for AndroidStudio
@@ -138,6 +135,10 @@ public class MultiSelectPreference extends LinearLayout {
                 if(inverted) adapter.selectAll();
                 return;
             }
+
+            // Load icons (doesn't work in Android Studio)
+            int[] entryIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
+            if(entryIcons != null) adapter.setIcons(entryIcons);
 
             // load selections
             SparseIntArray map = new SparseIntArray(entryValues.length);

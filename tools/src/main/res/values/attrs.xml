@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <declare-styleable name="SlidingTabLayout">
         <attr name="dividerColor" format="color" />
         <attr name="indicatorColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="MultiSelectPreference">
+        <attr name="name" format="string" />
+        <attr name="nameColor" format="color" />
+
+        <attr name="summary" format="string" />
+        <attr name="summaryColor" format="color" />
+
+        <attr name="entries" format="reference" />
+        <attr name="entryValues" format="reference" />
+        <attr name="entryIcons" format="reference" />
+
+        <attr name="key" format="string" />
+        <attr name="inverted" format="boolean" />
     </declare-styleable>
 </resources>

@@ -407,19 +407,15 @@ public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 		res.toArray(resArr);
 		return resArr;
 	}
-	
-	
-	/** Sets the selected items. Be sure to set the
-	 *  choice mode (using {@link #setChoiceMode(int)})
-	 *  before calling this!
-	 *  @param selections The positions to select
-	 *  If {@link #CHOICE_MODE_NONE}, nothing is selected.
-	 *  If {@link #CHOICE_MODE_SINGLE}, only the last valid
-	 *  item is selected.
-	 *  If {@link #CHOICE_MODE_MULTIPLE}, all valid items
-	 *  are selected.
-	 *  Items are considered valid if they
-	 *  are in the list.                                 */
+
+
+    /** Sets the selected items. Be sure to set the choice mode
+     *  (using {@link #setChoiceMode(int)}) before calling this!
+     *  @param selections The positions to select
+     *  If {@link #CHOICE_MODE_NONE}, nothing is selected.
+     *  If {@link #CHOICE_MODE_SINGLE}, only the last valid item is selected.
+     *  If {@link #CHOICE_MODE_MULTIPLE}, all valid items are selected.
+     *  Items are considered valid if they are in the list. */
 	public void setSelections(int... selections) {
 		deselectAll();
 		if(selections == null
@@ -431,18 +427,33 @@ public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 			mSelected.set(sel, true);
 		notifyDataSetChanged();
 	}
-	
-	/** Sets the selected items. Be sure to set the
-	 *  choice mode (using {@link #setChoiceMode(int)})
-	 *  before calling this!
-	 *  @param selections The positions to select
-	 *  If {@link #CHOICE_MODE_NONE}, nothing is selected.
-	 *  If {@link #CHOICE_MODE_SINGLE}, only the last valid
-	 *  item is selected.
-	 *  If {@link #CHOICE_MODE_MULTIPLE}, all valid items
-	 *  are selected.
-	 *  Items are considered valid if they
-	 *  are in the list.                                 */
+
+    /** Sets the selected items. Be sure to set the choice mode
+     *  (using {@link #setChoiceMode(int)}) before calling this!
+     *  @param selections The positions to select
+     *  If {@link #CHOICE_MODE_NONE}, nothing is selected.
+     *  If {@link #CHOICE_MODE_SINGLE}, only the last valid item is selected.
+     *  If {@link #CHOICE_MODE_MULTIPLE}, all valid items are selected.
+     *  Items are considered valid if they are in the list. */
+    public void setSelections(Integer... selections) {
+        deselectAll();
+        if(selections == null
+                || selections.length == 0
+                || mChoiceMode == CHOICE_MODE_NONE)
+            return;
+
+        for(int sel : selections)
+            mSelected.set(sel, true);
+        notifyDataSetChanged();
+    }
+
+    /** Sets the selected items. Be sure to set the choice mode
+     *  (using {@link #setChoiceMode(int)}) before calling this!
+     *  @param selections The positions to select
+     *  If {@link #CHOICE_MODE_NONE}, nothing is selected.
+     *  If {@link #CHOICE_MODE_SINGLE}, only the last valid item is selected.
+     *  If {@link #CHOICE_MODE_MULTIPLE}, all valid items are selected.
+     *  Items are considered valid if they are in the list. */
 	public void setSelections(Collection<? extends Integer> selections) {
 		deselectAll();
 		if(selections == null

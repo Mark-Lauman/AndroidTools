@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="test_name">I am Groot</string>
+    <color name="test_color">#FFFF00</color>
+
+    <string-array name="test_entries">
+        <item>First</item>
+        <item>Second</item>
+        <item>Third</item>
+    </string-array>
+</resources>

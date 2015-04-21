@@ -128,7 +128,7 @@ public class MultiSelectPreference extends LinearLayout {
 
             // Basic adapter setup
             adapter = new ArrayCheckAdapter<>(c, R.layout.list_item_check, entries);
-            int[] entryIcons = getIntArray(ta, R.styleable.MultiSelectPreference_entryIcons);
+            int[] entryIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
             if(entryIcons != null) adapter.setIcons(entryIcons);
 
             boolean inverted = ta.getBoolean(R.styleable.MultiSelectPreference_inverted, false);
@@ -174,6 +174,22 @@ public class MultiSelectPreference extends LinearLayout {
         int resId = ta.getResourceId(index, 0);
         if(resId == 0) return null;
         return ta.getResources().getIntArray(resId);
+    }
+
+    /** Get the resource array mapped to the given index.
+     * @param ta The typed array to take the value from.
+     * @param index The index of the resource array in that typed array.
+     * @return The resulting array, or null if no array is found. */
+    private static int[] getResourceArray(TypedArray ta, int index) {
+        int resId = ta.getResourceId(index, 0);
+        if(resId == 0) return null;
+        TypedArray ta2 = ta.getResources().obtainTypedArray(resId);
+        if(ta2 == null) return null;
+        int[] res = new int[ta2.length()];
+        for(int i=0; i<res.length; i++)
+            res[i] = ta2.getResourceId(i, 0);
+        ta2.recycle();
+        return res;
     }
 
 

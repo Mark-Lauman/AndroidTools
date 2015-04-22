@@ -224,6 +224,51 @@ public class MultiSelectPreference extends LinearLayout {
     }
 
 
+    /** Map a loaded MultiSelectPreference's saved string to a set of strings.
+     * @param pref The value saved by the MultiSelectPreference.
+     * @param entryValues The entryValues used by the preference.
+     *                    If null it will be assumed that the preference had no
+     *                    entryValues specified.
+     * @param strings The Strings to be matched with the preference.
+     * @return The entries of mapValues that had their values saved by the preference.
+     *         If the preference is not stored in the MultiSelectPreference style,
+     *         returns null instead.                                           */
+    public static CharSequence[] mapValues(String pref, int[] entryValues, CharSequence[] strings) {
+        // read the preference
+        Integer[] savedValues = parseValues(pref);
+
+        // quick handler for empty params
+        if(strings == null || strings.length == 0)
+            return new String[0];
+        if(pref == null || savedValues.length == 0) {
+            return new String[0];
+        }
+
+        // Default entryValues if null
+        if(entryValues == null) {
+            entryValues = new int[savedValues.length];
+            for(int i=0; i<entryValues.length; i++)
+                entryValues[i] = i;
+        }
+
+        // Create a map for tying indexes to entryValues.
+        SparseIntArray map = new SparseIntArray(entryValues.length);
+        for(int i=0; i<entryValues.length; i++)
+            map.put(entryValues[i], i);
+
+        // Use the map to get the stored indexes.
+        int[] savedIndexes = new int[savedValues.length];
+        for(int i=0; i<savedValues.length; i++)
+            savedIndexes[i] = map.get(savedValues[i]);
+
+        // Get the indexes from the starting strings
+        CharSequence[] res = new CharSequence[savedIndexes.length];
+        for(int i=0; i<res.length; i++)
+            res[i] = strings[savedIndexes[i]];
+        return res;
+    }
+
+
     private class DialogLauncher implements OnClickListener, QueryListener {
         @Override
         public void onClick(View v) {

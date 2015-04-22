@@ -80,9 +80,9 @@ public class MultiSelectPreference extends LinearLayout {
         setOnClickListener(new DialogLauncher());
         setOrientation(VERTICAL);
         setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-        setBackgroundResource(android.R.drawable.list_selector_background);
-        int pad = dp(8);
-        setPadding(pad, pad, pad, pad);
+        setBackgroundResource(R.drawable.list_ripple);
+        int pad = dp(16);
+        setPadding(pad, 0, pad, 0);
 
         // The TextView for displaying the preference name
         TextView vName = new TextView(c);
@@ -228,6 +228,7 @@ public class MultiSelectPreference extends LinearLayout {
             QueryDialogBuilder builder = new QueryDialogBuilder(getContext());
             builder.setPositiveButton(android.R.string.ok);
             builder.setNegativeButton(android.R.string.cancel);
+            builder.setTitle(name);
 
             // The list view from inside the dialog.
             ListView list = new ListView(getContext());
@@ -241,7 +242,6 @@ public class MultiSelectPreference extends LinearLayout {
             };
             list.setOnItemClickListener(listener);
             builder.setView(list);
-            builder.setTitle(name);
 
             builder.setQueryListener(this);
             builder.create().show();

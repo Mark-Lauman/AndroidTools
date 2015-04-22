@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ca.marklauman.tools.ArrayCheckAdapter;
 import ca.marklauman.tools.QueryDialogBuilder;
@@ -147,9 +148,11 @@ public class MultiSelectPreference extends LinearLayout {
             savedSel = new Integer[rawSel.length];
             for(int i = 0; i < savedSel.length; i++)
                 savedSel[i] = map.get(rawSel[i]);
+            Log.d("savedSel1", Arrays.toString(savedSel));
             adapter.setSelections(savedSel);
             if(inverted) adapter.invertSelections();
             savedSel = adapter.getSelections();
+            Log.d("savedSel2", Arrays.toString(savedSel));
             updateSummary();
 
         } finally {
@@ -214,7 +217,7 @@ public class MultiSelectPreference extends LinearLayout {
         String[] pref_split = pref.split(",");
         Integer[] res = new Integer[pref_split.length];
         for(int i=0; i<pref_split.length; i++) {
-            Log.d("pref[" + i + "]", "\"" + pref_split[i] + "\"");
+            Log.d("savedPref[" + i + "]", "\"" + pref_split[i] + "\"");
             try {
                 res[i] = Integer.parseInt(pref_split[i]);
             } catch (Exception e) {

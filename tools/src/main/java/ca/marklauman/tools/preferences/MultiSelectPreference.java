@@ -77,7 +77,7 @@ public class MultiSelectPreference extends LinearLayout {
         this.addView(v);
         TextView vName = (TextView) v.findViewById(android.R.id.text1);
         vSummary = (TextView) v.findViewById(android.R.id.text2);
-        ImageView vImage1 = (ImageView) v.findViewById(android.R.id.icon1);
+        View vImage1 = v.findViewById(android.R.id.icon1);
         ImageView vImage2 = (ImageView) v.findViewById(android.R.id.icon2);
 
         // Get the attribute set
@@ -114,8 +114,8 @@ public class MultiSelectPreference extends LinearLayout {
 
             // Icon attributes
             int imgRes = ta.getResourceId(R.styleable.MultiSelectPreference_image, 0);
-            if(imgRes != 0) vImage1.setImageResource(imgRes);
-            else vImage2.setVisibility(GONE);
+            if(imgRes != 0) vImage2.setImageResource(imgRes);
+            else vImage1.setVisibility(GONE);
 
             // Setup beyond this point is not needed for preview mode.
             if(isInEditMode()) return;

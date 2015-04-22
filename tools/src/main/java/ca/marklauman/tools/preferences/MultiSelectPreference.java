@@ -40,12 +40,14 @@ public class MultiSelectPreference extends LinearLayout {
     private int[] entryValues;
     /** The key used to save the preference */
     private String key;
+    /** The visible name of this preference */
+    private String name;
+    /** True if the selections are inverted in this preference */
+    private boolean inverted;
 
     /** The state of the saved preference. */
     private Integer[] savedSel;
 
-    /** The text view used for the preference name. */
-    private TextView vName;
     /** The text view used for the preference summary. */
     private TextView vSummary;
     /** The adapter used to display the entries */
@@ -78,11 +80,12 @@ public class MultiSelectPreference extends LinearLayout {
         setOnClickListener(new DialogLauncher());
         setOrientation(VERTICAL);
         setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+        setBackgroundResource(android.R.drawable.list_selector_background);
         int pad = dp(8);
         setPadding(pad, pad, pad, pad);
 
         // The TextView for displaying the preference name
-        vName = new TextView(c);
+        TextView vName = new TextView(c);
         vName.setWidth(getWidth());
         vName.setSingleLine();
         vName.setEllipsize(TruncateAt.END);
@@ -112,7 +115,8 @@ public class MultiSelectPreference extends LinearLayout {
             if(key == null) throw new IllegalArgumentException("MultiSelectPreference requires attribute \"key\".");
 
             // TextView attributes
-            vName.setText(ta.getString(R.styleable.MultiSelectPreference_name));
+            name = ta.getString(R.styleable.MultiSelectPreference_name);
+            vName.setText(name);
             vName.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_nameColor, Color.BLACK));
             vSummary.setText(ta.getString(R.styleable.MultiSelectPreference_summary));
             vSummary.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_summaryColor, Color.BLACK));
@@ -128,7 +132,7 @@ public class MultiSelectPreference extends LinearLayout {
 
             // Basic adapter setup
             adapter = new ArrayCheckAdapter<>(c, R.layout.list_item_check, entries);
-            boolean inverted = ta.getBoolean(R.styleable.MultiSelectPreference_inverted, false);
+            inverted = ta.getBoolean(R.styleable.MultiSelectPreference_inverted, false);
 
             // Basic selections for AndroidStudio
             if(isInEditMode()) {
@@ -237,6 +241,7 @@ public class MultiSelectPreference extends LinearLayout {
             };
             list.setOnItemClickListener(listener);
             builder.setView(list);
+            builder.setTitle(name);
 
             builder.setQueryListener(this);
             builder.create().show();
@@ -245,6 +250,7 @@ public class MultiSelectPreference extends LinearLayout {
         @Override
         public void onDialogClose(boolean ok) {
             if(!ok) return;
+            if(inverted) adapter.invertSelections();
             savedSel = adapter.getSelections();
 
             ArrayList<Integer> save = new ArrayList<>(savedSel.length);

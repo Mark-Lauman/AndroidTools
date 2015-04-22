@@ -28,6 +28,8 @@ import ca.marklauman.tools.Utils;
  *  @author Mark Lauman */
 public class MultiSelectPreference extends LinearLayout {
 
+    /** The entries on display. */
+    private CharSequence[] entries;
     /** The values matched to the entries. */
     private int[] entryValues;
     /** The key used to save the preference */
@@ -91,7 +93,7 @@ public class MultiSelectPreference extends LinearLayout {
 
         try {
             // Check for basic, required attributes
-            CharSequence[] entries = ta.getTextArray(R.styleable.MultiSelectPreference_entries);
+            entries = ta.getTextArray(R.styleable.MultiSelectPreference_entries);
             if(entries == null)
                 throw new IllegalArgumentException("MultiSelectPreference "
                                                    + "requires attribute \"entries\".");
@@ -105,15 +107,17 @@ public class MultiSelectPreference extends LinearLayout {
             vName.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_nameColor,
                                            vName.getCurrentTextColor()));
             summary = ta.getString(R.styleable.MultiSelectPreference_summary);
-            vSummary.setText(summary);
+            if(summary != null && 0 < summary.length()) vSummary.setText(summary);
+            else vSummary.setVisibility(GONE);
             vSummary.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_summaryColor,
                                               vSummary.getCurrentTextColor()));
 
             // Icon attributes
             int imgRes = ta.getResourceId(R.styleable.MultiSelectPreference_image, 0);
             if(imgRes != 0) vImage.setImageResource(imgRes);
+            else vImage.setVisibility(GONE);
 
-            // Rendering beyond this point is not needed for preview mode. (popup, etc)
+            // Setup beyond this point is not needed for preview mode.
             if(isInEditMode()) return;
 
             // Determine the values to save when items are selected.
@@ -145,9 +149,27 @@ public class MultiSelectPreference extends LinearLayout {
             adapter.setSelections(savedSel);
             if(inverted) adapter.invertSelections();
             savedSel = adapter.getSelections();
+            updateSummary();
 
         } finally {
             ta.recycle();
+        }
+    }
+
+    /** Update the summary based off of the selected values */
+    private void updateSummary() {
+        if(savedSel.length == 0) {
+            // Display the summary if nothing is selected.
+            if(summary != null && 0 < summary.length()) {
+                vSummary.setVisibility(VISIBLE);
+                vSummary.setText(summary);
+            } else vSummary.setVisibility(GONE);
+        } else {
+            CharSequence[] display = new String[savedSel.length];
+            for(int i=0; i<display.length; i++)
+                display[i] = entries[savedSel[i]];
+            vSummary.setVisibility(VISIBLE);
+            vSummary.setText(Utils.join(", ", display));
         }
     }
 
@@ -231,11 +253,13 @@ public class MultiSelectPreference extends LinearLayout {
         @Override
         public void onDialogClose(boolean ok) {
             if(!ok) return;
-            if(inverted) adapter.invertSelections();
             savedSel = adapter.getSelections();
+            updateSummary();
+            if(inverted) adapter.invertSelections();
+            Integer[] saveValues = adapter.getSelections();
 
-            ArrayList<Integer> save = new ArrayList<>(savedSel.length);
-            for(int i : savedSel)
+            ArrayList<Integer> save = new ArrayList<>(saveValues.length);
+            for(int i : saveValues)
                 save.add(entryValues[i]);
 
             Log.d("save", Utils.join(",", save));

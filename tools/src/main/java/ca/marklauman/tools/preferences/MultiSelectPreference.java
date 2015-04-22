@@ -4,16 +4,14 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseIntArray;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,13 +27,6 @@ import ca.marklauman.tools.Utils;
 /** An alternative to MultiSelectPreference that can be placed in any view structure.
  *  @author Mark Lauman */
 public class MultiSelectPreference extends LinearLayout {
-    /** The android namespace used for some of our attributes. */
-    private final static String ANDROID = "http://schemas.android.com/apk/res/android";
-    /** The res-auto namespace used for our custom attributes */
-    private final static String RES_AUTO = "http://schemas.android.com/apk/res-auto";
-
-    /** The size of 1dp in px */
-    private final float dp = getResources().getDisplayMetrics().density;
 
     /** The values matched to the entries. */
     private int[] entryValues;
@@ -43,6 +34,8 @@ public class MultiSelectPreference extends LinearLayout {
     private String key;
     /** The visible name of this preference */
     private String name;
+    /** The visible summary of this preference. */
+    private String summary;
     /** True if the selections are inverted in this preference */
     private boolean inverted;
 
@@ -79,47 +72,49 @@ public class MultiSelectPreference extends LinearLayout {
     /** My additions to the basic constructors. */
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         setOnClickListener(new DialogLauncher());
-        setOrientation(VERTICAL);
-        setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-        int pad = dp(16);
-        setPadding(pad, 0, pad, 0);
-
-        // The TextView for displaying the preference name
-        TextView vName = new TextView(c);
-        vName.setWidth(getWidth());
-        vName.setSingleLine();
-        vName.setEllipsize(TruncateAt.END);
-        vName.setTextSize(18);
-        this.addView(vName);
-
-        // The TextView for displaying the summary
-        vSummary = new TextView(c);
-        vSummary.setWidth(getWidth());
-        vSummary.setMaxLines(2);
-        vSummary.setEllipsize(TruncateAt.END);
-        vSummary.setTextSize(14);
-        this.addView(vSummary);
+        View v = View.inflate(c, R.layout.multi_select_preference, null);
+        this.addView(v);
+        TextView vName = (TextView) v.findViewById(android.R.id.text1);
+        vSummary = (TextView) v.findViewById(android.R.id.text2);
+        ImageView vImage = (ImageView) v.findViewById(android.R.id.icon);
 
         // Get the attribute set
-        if(rawAttrs == null) throw new UnsupportedOperationException("MultiSelectPreference must be created with a attribute set.");
+        if(rawAttrs == null)
+            throw new UnsupportedOperationException("MultiSelectPreference "
+                                                    + "must be created with a attribute set.");
         TypedArray ta = c.getTheme().obtainStyledAttributes(rawAttrs,
                                                             R.styleable.MultiSelectPreference,
                                                             defStyleAttr, defStyleRes);
-        if(ta == null) throw new UnsupportedOperationException("MultiSelectPreference must be created with a attribute set.");
+        if(ta == null)
+            throw new UnsupportedOperationException("MultiSelectPreference "
+                                                    + "must be created with a attribute set.");
 
         try {
             // Check for basic, required attributes
             CharSequence[] entries = ta.getTextArray(R.styleable.MultiSelectPreference_entries);
-            if(entries == null) throw new IllegalArgumentException("MultiSelectPreference requires attribute \"entries\".");
+            if(entries == null)
+                throw new IllegalArgumentException("MultiSelectPreference "
+                                                   + "requires attribute \"entries\".");
             key = ta.getString(R.styleable.MultiSelectPreference_key);
-            if(key == null) throw new IllegalArgumentException("MultiSelectPreference requires attribute \"key\".");
+            if(key == null) throw new IllegalArgumentException("MultiSelectPreference "
+                                                               + "requires attribute \"key\".");
 
             // TextView attributes
             name = ta.getString(R.styleable.MultiSelectPreference_name);
             vName.setText(name);
-            vName.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_nameColor, Color.BLACK));
-            vSummary.setText(ta.getString(R.styleable.MultiSelectPreference_summary));
-            vSummary.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_summaryColor, Color.BLACK));
+            vName.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_nameColor,
+                                           vName.getCurrentTextColor()));
+            summary = ta.getString(R.styleable.MultiSelectPreference_summary);
+            vSummary.setText(summary);
+            vSummary.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_summaryColor,
+                                              vSummary.getCurrentTextColor()));
+
+            // Icon attributes
+            int imgRes = ta.getResourceId(R.styleable.MultiSelectPreference_image, 0);
+            if(imgRes != 0) vImage.setImageResource(imgRes);
+
+            // Rendering beyond this point is not needed for preview mode. (popup, etc)
+            if(isInEditMode()) return;
 
             // Determine the values to save when items are selected.
             // Default to 0,1,2,3,4...
@@ -133,14 +128,6 @@ public class MultiSelectPreference extends LinearLayout {
             // Basic adapter setup
             adapter = new ArrayCheckAdapter<>(c, R.layout.list_item_check, entries);
             inverted = ta.getBoolean(R.styleable.MultiSelectPreference_inverted, false);
-
-            // Basic selections for AndroidStudio
-            if(isInEditMode()) {
-                if(inverted) adapter.selectAll();
-                return;
-            }
-
-            // Load icons (doesn't work in Android Studio)
             int[] entryIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
             if(entryIcons != null) adapter.setIcons(entryIcons);
 
@@ -162,14 +149,6 @@ public class MultiSelectPreference extends LinearLayout {
         } finally {
             ta.recycle();
         }
-    }
-
-
-    /** Convert from dp into px.
-     *  @param dp The measurement in dp.
-     *  @return That measurement in px. */
-    private int dp(int dp) {
-        return (int)(dp * this.dp + 0.5);
     }
 
 
@@ -231,7 +210,8 @@ public class MultiSelectPreference extends LinearLayout {
 
             // The list view from inside the dialog.
             ListView list = new ListView(getContext());
-            list.setBackgroundColor(Color.WHITE);
+            int background = getResources().getColor(R.color.background_grey);
+            list.setBackgroundColor(background);
             adapter.setSelections(savedSel);
             list.setAdapter(adapter);
             AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {

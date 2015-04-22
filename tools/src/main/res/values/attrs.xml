@@ -6,6 +6,8 @@
     </declare-styleable>
 
     <declare-styleable name="MultiSelectPreference">
+        <attr name="image" format="reference" />
+
         <attr name="name" format="string" />
         <attr name="nameColor" format="color" />
 

@@ -49,7 +49,7 @@ public class CheckBoxPreference extends LinearLayout {
     /** My additions to the basic constructors. */
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         setOnClickListener(new Toggler());
-        View v = View.inflate(c, R.layout.multi_select_preference, null);
+        View v = View.inflate(c, R.layout.check_box_preference, null);
         vCheckBox = (CheckBox) v.findViewById(android.R.id.checkbox);
         TextView vName = (TextView) v.findViewById(android.R.id.text1);
         TextView vSummary = (TextView) v.findViewById(android.R.id.text2);

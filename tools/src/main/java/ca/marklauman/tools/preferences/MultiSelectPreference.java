@@ -7,7 +7,6 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import ca.marklauman.tools.ArrayCheckAdapter;
 import ca.marklauman.tools.QueryDialogBuilder;
@@ -133,6 +131,7 @@ public class MultiSelectPreference extends LinearLayout {
 
             // Basic adapter setup
             adapter = new ArrayCheckAdapter<>(c, R.layout.list_item_check, entries);
+            adapter.setChoiceMode(ArrayCheckAdapter.CHOICE_MODE_MULTIPLE);
             inverted = ta.getBoolean(R.styleable.MultiSelectPreference_inverted, false);
             int[] entryIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
             if(entryIcons != null) adapter.setIcons(entryIcons);
@@ -148,11 +147,9 @@ public class MultiSelectPreference extends LinearLayout {
             savedSel = new Integer[rawSel.length];
             for(int i = 0; i < savedSel.length; i++)
                 savedSel[i] = map.get(rawSel[i]);
-            Log.d("savedSel1", Arrays.toString(savedSel));
             adapter.setSelections(savedSel);
             if(inverted) adapter.invertSelections();
             savedSel = adapter.getSelections();
-            Log.d("savedSel2", Arrays.toString(savedSel));
             updateSummary();
 
         } finally {
@@ -217,7 +214,6 @@ public class MultiSelectPreference extends LinearLayout {
         String[] pref_split = pref.split(",");
         Integer[] res = new Integer[pref_split.length];
         for(int i=0; i<pref_split.length; i++) {
-            Log.d("savedPref[" + i + "]", "\"" + pref_split[i] + "\"");
             try {
                 res[i] = Integer.parseInt(pref_split[i]);
             } catch (Exception e) {

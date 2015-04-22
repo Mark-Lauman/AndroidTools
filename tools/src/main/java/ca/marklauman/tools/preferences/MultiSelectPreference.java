@@ -140,19 +140,21 @@ public class MultiSelectPreference extends LinearLayout {
             int[] entryIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
             if(entryIcons != null) adapter.setIcons(entryIcons);
 
-            // load selections
+            // Create a map to link the entry values to positions
             SparseIntArray map = new SparseIntArray(entryValues.length);
             for(int i=0; i<entryValues.length; i++)
                 map.put(entryValues[i], i);
-            String[] rawSel = PreferenceManager.getDefaultSharedPreferences(c)
-                                               .getString(key, "").split(",");
+
+            // Load the selections
+            Integer[] rawSel = parseValues(PreferenceManager.getDefaultSharedPreferences(c)
+                                                            .getString(key, ""));
             savedSel = new Integer[rawSel.length];
-            for(int i=0; i<savedSel.length; i++)
-                savedSel[i] = map.get(Integer.parseInt(rawSel[i]));
+            for(int i = 0; i < savedSel.length; i++)
+                savedSel[i] = map.get(rawSel[i]);
             adapter.setSelections(savedSel);
-            if(inverted)
-                adapter.invertSelections();
+            if(inverted) adapter.invertSelections();
             savedSel = adapter.getSelections();
+
         } finally {
             ta.recycle();
         }
@@ -190,6 +192,28 @@ public class MultiSelectPreference extends LinearLayout {
         for(int i=0; i<res.length; i++)
             res[i] = ta2.getResourceId(i, 0);
         ta2.recycle();
+        return res;
+    }
+
+
+    /** Interpret the saved values in a MultiSelectPreference string.
+     *  @param pref The string stored by the MultiSelectPreference.
+     *  @return The values inside that string, or null if the string
+     *  doesn't follow MultiSelectPreference's storage format.     */
+    public static Integer[] parseValues(String pref) {
+        if(pref == null || "".equals(pref))
+            return new Integer[0];
+
+        // Split it up and parse each segment into an int
+        String[] pref_split = pref.split(",");
+        Integer[] res = new Integer[pref_split.length];
+        for(int i=0; i<pref_split.length; i++) {
+            try {
+                res[i] = Integer.parseInt(pref_split[i]);
+            } catch (Exception e) {
+                return null;
+            }
+        }
         return res;
     }
 

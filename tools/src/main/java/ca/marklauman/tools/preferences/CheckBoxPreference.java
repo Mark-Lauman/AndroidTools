@@ -93,6 +93,9 @@ public class CheckBoxPreference extends LinearLayout {
             ta.recycle();
         }
 
+        // Android Studio can't load preferences.
+        if(isInEditMode()) return;
+
         // Set the checkbox to the value of the key
         vCheckBox.setChecked(PreferenceManager.getDefaultSharedPreferences(c).getBoolean(key, false));
     }

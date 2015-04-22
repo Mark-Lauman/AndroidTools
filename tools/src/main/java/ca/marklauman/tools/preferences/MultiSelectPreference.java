@@ -37,6 +37,8 @@ public class MultiSelectPreference extends LinearLayout {
     private String name;
     /** The visible summary of this preference. */
     private String summary;
+    /** True if the summary does not change */
+    private boolean summaryStatic;
     /** True if the selections are inverted in this preference */
     private boolean inverted;
 
@@ -111,8 +113,10 @@ public class MultiSelectPreference extends LinearLayout {
             else vSummary.setVisibility(GONE);
             vSummary.setTextColor(ta.getColor(R.styleable.MultiSelectPreference_summaryColor,
                                               vSummary.getCurrentTextColor()));
+            summaryStatic = ta.getBoolean(R.styleable.MultiSelectPreference_summaryStatic,
+                                          false);
 
-            // Icon attributes
+            // Main icon attributes
             int imgRes = ta.getResourceId(R.styleable.MultiSelectPreference_image, 0);
             if(imgRes != 0) vImage2.setImageResource(imgRes);
             else vImage1.setVisibility(GONE);
@@ -129,36 +133,68 @@ public class MultiSelectPreference extends LinearLayout {
                     entryValues[i] = i;
             }
 
-            // Basic adapter setup
+            // Basic adapter setup + attributes
             adapter = new ArrayCheckAdapter<>(c, R.layout.list_item_check, entries);
             adapter.setChoiceMode(ArrayCheckAdapter.CHOICE_MODE_MULTIPLE);
             inverted = ta.getBoolean(R.styleable.MultiSelectPreference_inverted, false);
-            int[] entryIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
-            if(entryIcons != null) adapter.setIcons(entryIcons);
 
-            // Create a map to link the entry values to positions
-            SparseIntArray map = new SparseIntArray(entryValues.length);
-            for(int i=0; i<entryValues.length; i++)
-                map.put(entryValues[i], i);
+
+            // Get the icons for the list and match them to their entries.
+            int[] rawIcons = getResourceArray(ta, R.styleable.MultiSelectPreference_entryIcons);
+            if(rawIcons != null) {
+                // Load the icon values (paired to entry values - defaults to 0,1,2,3,4...)
+                int[] iconValues = getIntArray(ta, R.styleable.MultiSelectPreference_entryIconValues);
+                if(iconValues == null) {
+                    iconValues = new int[entries.length];
+                    for(int i=0; i<iconValues.length; i++)
+                        iconValues[i] = i;
+                }
+
+                // Map icon values to icons
+                SparseIntArray map = new SparseIntArray(iconValues.length);
+                for(int i=0; i<iconValues.length; i++)
+                    map.put(iconValues[i], rawIcons[i]);
+
+                // Use the map to link entry values to icons
+                int[] icons = new int[rawIcons.length];
+                for(int i=0; i<icons.length; i++)
+                    icons[i] = map.get(entryValues[i]);
+
+                // set the icons
+                adapter.setIcons(icons);
+            }
 
             // Load the selections
-            Integer[] rawSel = parseValues(PreferenceManager.getDefaultSharedPreferences(c)
-                                                            .getString(key, ""));
-            savedSel = new Integer[rawSel.length];
-            for(int i = 0; i < savedSel.length; i++)
-                savedSel[i] = map.get(rawSel[i]);
-            adapter.setSelections(savedSel);
-            if(inverted) adapter.invertSelections();
-            savedSel = adapter.getSelections();
-            updateSummary();
-
+            reload();
         } finally {
             ta.recycle();
         }
     }
 
+
+    /** Reload the value tied to this preference. */
+    public void reload() {
+        // Create a map to link the entry values to positions
+        SparseIntArray map = new SparseIntArray(entryValues.length);
+        for(int i=0; i<entryValues.length; i++)
+            map.put(entryValues[i], i);
+
+        // reload and interpret the selections
+        Integer[] rawSel = parseValues(PreferenceManager.getDefaultSharedPreferences(getContext())
+                                                        .getString(key, ""));
+        savedSel = new Integer[rawSel.length];
+        for(int i = 0; i < savedSel.length; i++)
+            savedSel[i] = map.get(rawSel[i]);
+        adapter.setSelections(savedSel);
+        if(inverted) adapter.invertSelections();
+        savedSel = adapter.getSelections();
+        updateSummary();
+    }
+
+
     /** Update the summary based off of the selected values */
     private void updateSummary() {
+        if(summaryStatic) return;
         if(savedSel.length == 0) {
             // Display the summary if nothing is selected.
             if(summary != null && 0 < summary.length()) {

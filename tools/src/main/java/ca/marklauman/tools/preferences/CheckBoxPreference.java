@@ -96,8 +96,14 @@ public class CheckBoxPreference extends LinearLayout {
         // Android Studio can't load preferences.
         if(isInEditMode()) return;
 
+        reload();
+    }
+
+    /** Reload the value tied to this preference. */
+    public void reload() {
         // Set the checkbox to the value of the key
-        vCheckBox.setChecked(PreferenceManager.getDefaultSharedPreferences(c).getBoolean(key, false));
+        vCheckBox.setChecked(PreferenceManager.getDefaultSharedPreferences(getContext())
+                                              .getBoolean(key, false));
     }
 
     private class Toggler implements OnClickListener {

@@ -11,9 +11,11 @@
         <attr name="nameColor" format="color" />
         <attr name="summary" format="string" />
         <attr name="summaryColor" format="color" />
+        <attr name="summaryStatic" format="boolean" />
         <attr name="entries" format="reference" />
         <attr name="entryValues" format="reference" />
         <attr name="entryIcons" format="reference" />
+        <attr name="entryIconValues" format="reference" />
         <attr name="key" format="string" />
         <attr name="inverted" format="boolean" />
     </declare-styleable>

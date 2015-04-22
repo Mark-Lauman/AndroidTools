@@ -29,26 +29,9 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
-/** <p></p>An implementation of MultiSelectImagePreference for Android 2,
- *  with some caveats.</p>
- *  <ul><li>First, it ignores the EntryValues parameter and saves the indexes of
- *          the selected entries to memory instead.</li>
- *      <li>The raw saved value will be a list of numbers separated by commas
- *          (for instance: "0,4,7"). You can thus set the default selections
- *          with android:defaultValue.</li>
- *      <li>You can specify an icon for each item with the "icons" parameter in xml,
- *          or with {@link #setIcons(int[])}. In xml the icons are represented
- *          as an array of drawable objects. If there are fewer icons than entries,
- *          the later entries will have no icons.</li>
- *      <li>The preference can be inverted (so the deselected items are stored and
- *          the selected items are not) with inverted="true" or {@link #inverted}.
- *          By default, inversion is off (or false).</li>
- *      <li>When no items are selected, the default summary is displayed. When
- *          items are selected, the summary is replaced by those items.
- *          Programmatically, you can set the default summary with
- *          {@link #defaultSummary}.</li>
- *  </ul>
- *  @author Mark Lauman  */
+/** Deprecated in favor of
+ *  {@link ca.marklauman.tools.preferences.MultiSelectPreference}. */
+@Deprecated
 public class MultiSelectPreference extends ListPreference {
 
     /** If this preference is inverted (as per the class description). */

@@ -17,4 +17,13 @@
         <attr name="key" format="string" />
         <attr name="inverted" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="CheckBoxPreference">
+        <attr name="image" />
+        <attr name="name" />
+        <attr name="nameColor" />
+        <attr name="summary" />
+        <attr name="summaryColor" />
+        <attr name="key" />
+    </declare-styleable>
 </resources>

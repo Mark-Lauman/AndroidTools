@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -213,6 +214,7 @@ public class MultiSelectPreference extends LinearLayout {
         String[] pref_split = pref.split(",");
         Integer[] res = new Integer[pref_split.length];
         for(int i=0; i<pref_split.length; i++) {
+            Log.d("pref[" + i + "]", "\"" + pref_split[i] + "\"");
             try {
                 res[i] = Integer.parseInt(pref_split[i]);
             } catch (Exception e) {

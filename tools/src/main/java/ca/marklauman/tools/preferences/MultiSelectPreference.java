@@ -81,7 +81,6 @@ public class MultiSelectPreference extends LinearLayout {
         setOnClickListener(new DialogLauncher());
         setOrientation(VERTICAL);
         setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-        setBackgroundResource(R.drawable.click_back);
         int pad = dp(16);
         setPadding(pad, 0, pad, 0);
 

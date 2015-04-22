@@ -1,6 +1,7 @@
 package ca.marklauman.tools.preferences;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -79,8 +80,8 @@ public class MultiSelectPreference extends LinearLayout {
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         setOnClickListener(new DialogLauncher());
         setOrientation(VERTICAL);
-        setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-        setBackgroundResource(R.drawable.list_ripple);
+        setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+        setBackgroundResource(R.drawable.click_back);
         int pad = dp(16);
         setPadding(pad, 0, pad, 0);
 
@@ -228,7 +229,6 @@ public class MultiSelectPreference extends LinearLayout {
             QueryDialogBuilder builder = new QueryDialogBuilder(getContext());
             builder.setPositiveButton(android.R.string.ok);
             builder.setNegativeButton(android.R.string.cancel);
-            builder.setTitle(name);
 
             // The list view from inside the dialog.
             ListView list = new ListView(getContext());
@@ -244,7 +244,9 @@ public class MultiSelectPreference extends LinearLayout {
             builder.setView(list);
 
             builder.setQueryListener(this);
-            builder.create().show();
+            AlertDialog d = builder.create();
+            d.setTitle(name);
+            d.show();
         }
 
         @Override

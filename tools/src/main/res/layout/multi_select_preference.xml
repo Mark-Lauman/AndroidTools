@@ -4,17 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:background="@android:color/white" >
+    android:paddingRight="16dp" >
 
-    <ImageView android:id="@android:id/icon"
+    <RelativeLayout android:id="@android:id/icon1"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
-        tools:ignore="ContentDescription" />
+        android:gravity="center" >
+
+        <ImageView android:id="@android:id/icon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="48dp"
+            android:maxHeight="48dp"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +36,7 @@
         <TextView android:id="@android:id/text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@android:color/primary_text_light"
             android:singleLine="true"
             android:ellipsize="end" />
@@ -35,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/secondary_text_light"
+            android:textColor="@android:color/tertiary_text_light"
             android:maxLines="2"
             android:ellipsize="end" />
 

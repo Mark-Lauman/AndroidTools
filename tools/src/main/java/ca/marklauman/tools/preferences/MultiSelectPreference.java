@@ -7,7 +7,6 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -78,7 +77,8 @@ public class MultiSelectPreference extends LinearLayout {
         this.addView(v);
         TextView vName = (TextView) v.findViewById(android.R.id.text1);
         vSummary = (TextView) v.findViewById(android.R.id.text2);
-        ImageView vImage = (ImageView) v.findViewById(android.R.id.icon);
+        ImageView vImage1 = (ImageView) v.findViewById(android.R.id.icon1);
+        ImageView vImage2 = (ImageView) v.findViewById(android.R.id.icon2);
 
         // Get the attribute set
         if(rawAttrs == null)
@@ -114,8 +114,8 @@ public class MultiSelectPreference extends LinearLayout {
 
             // Icon attributes
             int imgRes = ta.getResourceId(R.styleable.MultiSelectPreference_image, 0);
-            if(imgRes != 0) vImage.setImageResource(imgRes);
-            else vImage.setVisibility(GONE);
+            if(imgRes != 0) vImage1.setImageResource(imgRes);
+            else vImage2.setVisibility(GONE);
 
             // Setup beyond this point is not needed for preview mode.
             if(isInEditMode()) return;
@@ -261,8 +261,10 @@ public class MultiSelectPreference extends LinearLayout {
             ArrayList<Integer> save = new ArrayList<>(saveValues.length);
             for(int i : saveValues)
                 save.add(entryValues[i]);
-
-            Log.d("save", Utils.join(",", save));
+            PreferenceManager.getDefaultSharedPreferences(getContext())
+                             .edit()
+                             .putString(key, Utils.join(",", save))
+                             .commit();
         }
     }
 }

@@ -282,7 +282,7 @@ public class MultiSelectPreference extends LinearLayout {
 
         // Default entryValues if null
         if(entryValues == null) {
-            entryValues = new int[savedValues.length];
+            entryValues = new int[strings.length];
             for(int i=0; i<entryValues.length; i++)
                 entryValues[i] = i;
         }

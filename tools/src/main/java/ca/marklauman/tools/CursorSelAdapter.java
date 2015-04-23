@@ -14,6 +14,7 @@
 package ca.marklauman.tools;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import android.content.Context;
@@ -301,6 +302,30 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		}
 		return res;
 	}
+
+
+    /** Gets all selected item ids.
+     *  Before it returns, it verifies that the selections
+     *  are in the cursor. This slows it down compared to
+     *  {@link #getSelected()}
+     *  @return The ids of each selected item. There is
+     *  no guaranteed order to this list, users must sort
+     *  it themselves if necessary.                    */
+    public long[] getSelectedVerify() {
+        if(mCursor == null || ! mCursor.moveToFirst())
+            return new long[0];
+
+        ArrayList<Long> res1 = new ArrayList<>(mSelected.size());
+        do {
+            long id = mCursor.getLong(_id);
+            if(mSelected.contains(id)) res1.add(id);
+        } while (mCursor.moveToNext());
+
+        long[] res2 = new long[res1.size()];
+        for(int i=0; i<res2.length; i++)
+            res2[i] = res1.get(i);
+        return res2;
+    }
 
     /** Gets all selected item ids as Longs (not longs).
      *  Computationally identical to {@link #getSelected()}.

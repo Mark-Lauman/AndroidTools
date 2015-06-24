@@ -248,7 +248,7 @@ public class FragmentPopup extends Fragment {
 	public interface PopupListener {
 		/** Called when the button is pressed on a targeted
 		 *  {@link FragmentPopup}.                                 */
-        public void onPopupClicked();
+        void onPopupClicked();
     }
 	
 	

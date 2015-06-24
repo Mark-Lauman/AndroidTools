@@ -188,7 +188,7 @@ public class QueryDialogBuilder extends Builder {
 		/** Called when the query dialog closes.
 		 *  @param positive {@code true} if the
 		 *  positive result was chosen.      */
-		public void onDialogClose(boolean positive);
+		void onDialogClose(boolean positive);
 	}
 	
 	private class PosListener implements OnClickListener {

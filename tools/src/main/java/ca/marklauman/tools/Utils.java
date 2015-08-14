@@ -13,9 +13,32 @@
  * limitations under the License.                                        */
 package ca.marklauman.tools;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+
 import java.util.Collection;
 
 public abstract class Utils {
+
+    /** Retrieve an array of drawable resources from the xml of the provided {@link Context}.
+     *  These resources are placed in an applications xml files as an array containing
+     *  picture resource ids (not an integer-array or a string-array, just an array).
+     *  @param c The {@code Context} to search for the array.
+     *  @param resourceId The resource id of an {@code <array>} containing a list of drawables.
+     *  @return The resource ids of all the drawables in the array, in the order in which
+     *  they appear in the xml. Returns null if the array does not exist. */
+    public static int[] getDrawableResources(Context c, int resourceId) {
+        TypedArray ta = c.getResources()
+                         .obtainTypedArray(resourceId);
+        if(ta == null) return null;
+
+        int[] res = new int[ta.length()];
+        for(int i=0; i<ta.length(); i++)
+            res[i] = ta.getResourceId(i, -1);
+
+        ta.recycle();
+        return res;
+    }
 
     /** Round a number to a given number of places
      *  @param number The number to round

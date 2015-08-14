@@ -100,18 +100,29 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	 *  @return A View corresponding to the data at the specified position. */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View res = super.getView(position, convertView, parent);
+		convertView = super.getView(position, convertView, parent);
         mCursor.moveToPosition(position);
-		if(mSelected.contains(mCursor.getLong(_id)))
-			res.setBackgroundColor(backSelect);
-		else if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN)
-            //noinspection deprecation
-            res.setBackgroundDrawable(backNorm);
-        else res.setBackground(backNorm);
-		return res;
+        return showSelection(convertView, mCursor,
+                             mSelected.contains(mCursor.getLong(_id)));
 	}
-	
-	
+
+    /** Changes a view to reflect its selection status.
+     *  The default implementation changes the background color.
+     *  @param view The view to update.
+     *  @param cursor The cursor positioned at the current item.
+     *                If you change the cursor's position it won't matter.
+     *  @param selected True if this item is selected right now.
+     *  @return The original view, modified to indicate the selection. */
+    protected View showSelection(View view, Cursor cursor, boolean selected) {
+        if(selected) view.setBackgroundColor(backSelect);
+        else if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN)
+            //noinspection deprecation
+            view.setBackgroundDrawable(backNorm);
+        else view.setBackground(backNorm);
+        return view;
+    }
+
+
 	/** Get the item position paired with this id.
 	 *  @param id The id of the item according to the cursor.
 	 *  @return The position of that item in the list,

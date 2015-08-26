@@ -125,4 +125,17 @@ public abstract class Utils {
         if(res.length() < separator.length()) return "";
         return res.substring(separator.length());
     }
+
+    /** Count the occurrences of the character in the sequence.
+     *  @param seq The sequence of characters to loop over.
+     *  @param c The character to find.
+     *  @return The total number of times c appears in seq. */
+    public static int countChar(CharSequence seq, char c) {
+        if(seq == null || seq.length() < 1) return 0;
+        int count = 0;
+        for(int i=0; i<seq.length(); i++) {
+            if(c == seq.charAt(i)) count++;
+        }
+        return count;
+    }
 }

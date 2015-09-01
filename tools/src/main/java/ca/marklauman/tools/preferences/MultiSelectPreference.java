@@ -76,7 +76,7 @@ public class MultiSelectPreference extends LinearLayout {
     /** My additions to the basic constructors. */
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         setOnClickListener(new DialogLauncher());
-        View v = View.inflate(c, R.layout.multi_select_preference, null);
+        View v = View.inflate(c, R.layout.icon_preference, null);
         this.addView(v);
         TextView vName = (TextView) v.findViewById(android.R.id.text1);
         vSummary = (TextView) v.findViewById(android.R.id.text2);
@@ -92,7 +92,7 @@ public class MultiSelectPreference extends LinearLayout {
                                                             defStyleAttr, defStyleRes);
         if(ta == null)
             throw new UnsupportedOperationException("MultiSelectPreference "
-                                                    + "must be created with a attribute set.");
+                                                    + "must be created with an attribute set.");
 
         try {
             // Check for basic, required attributes

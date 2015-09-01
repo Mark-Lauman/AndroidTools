@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.provider.BaseColumns;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import android.widget.ListView;
  *  selection implementation. This should work for all
  *  versions of Android down to API v4.
  *  @author Mark Lauman                                  */
+@SuppressWarnings("WeakerAccess")
 public class CursorSelAdapter extends SimpleCursorAdapter {
 	
 	/** Default background color id for selected items */
@@ -47,7 +49,7 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
     private static int backDefSelect = -1;
 	
 	/** Background of an unselected list item. */
-	private Drawable backNorm;
+	final private Drawable backNorm;
 	/** Background color of a selected list item. */
 	private int backSelect = -1;
 	
@@ -55,7 +57,7 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 	/** Current choice mode.   */
 	private int mChoiceMode = CHOICE_MODE_NONE;
 	/** Current selections.    */
-	protected HashSet<Long> mSelected = new HashSet<>();
+	final protected HashSet<Long> mSelected = new HashSet<>();
     /** The column id for the _id column */
     protected int _id;
 	
@@ -76,8 +78,7 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
 		super(context, layout, null, from, to, 0);
         backNorm = View.inflate(context, layout, null).getBackground();
 		if(backDefSelect == -1)
-            backDefSelect = context.getResources()
-								   .getColor(SEL_COLOR);
+            backDefSelect = ContextCompat.getColor(context, SEL_COLOR);
         backSelect = backDefSelect;
 	}
 
@@ -113,7 +114,8 @@ public class CursorSelAdapter extends SimpleCursorAdapter {
      *                If you change the cursor's position it won't matter.
      *  @param selected True if this item is selected right now.
      *  @return The original view, modified to indicate the selection. */
-    protected View showSelection(View view, Cursor cursor, boolean selected) {
+    @SuppressWarnings("UnusedParameters")
+	protected View showSelection(View view, Cursor cursor, boolean selected) {
         if(selected) view.setBackgroundColor(backSelect);
         else if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN)
             //noinspection deprecation

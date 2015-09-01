@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -182,6 +183,7 @@ public class MultiSelectPreference extends LinearLayout {
         // reload and interpret the selections
         Integer[] rawSel = parseValues(PreferenceManager.getDefaultSharedPreferences(getContext())
                                                         .getString(key, ""));
+        if(rawSel == null) rawSel = new Integer[0];
         savedSel = new Integer[rawSel.length];
         for(int i = 0; i < savedSel.length; i++)
             savedSel[i] = map.get(rawSel[i]);
@@ -270,15 +272,14 @@ public class MultiSelectPreference extends LinearLayout {
      *         If the preference is not stored in the MultiSelectPreference style,
      *         returns null instead.                                           */
     public static CharSequence[] mapValues(String pref, int[] entryValues, CharSequence[] strings) {
+        // quick handler for empty params
+        if(strings == null || strings.length == 0 || pref == null)
+            return new String[0];
+
         // read the preference
         Integer[] savedValues = parseValues(pref);
-
-        // quick handler for empty params
-        if(strings == null || strings.length == 0)
+        if(savedValues == null || savedValues.length == 0)
             return new String[0];
-        if(pref == null || savedValues.length == 0) {
-            return new String[0];
-        }
 
         // Default entryValues if null
         if(entryValues == null) {
@@ -314,7 +315,7 @@ public class MultiSelectPreference extends LinearLayout {
 
             // The list view from inside the dialog.
             ListView list = new ListView(getContext());
-            int background = getResources().getColor(R.color.background_grey);
+            int background = ContextCompat.getColor(getContext(), R.color.background_grey);
             list.setBackgroundColor(background);
             adapter.setSelections(savedSel);
             list.setAdapter(adapter);

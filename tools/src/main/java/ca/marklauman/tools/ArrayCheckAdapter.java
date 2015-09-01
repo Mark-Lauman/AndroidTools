@@ -22,6 +22,7 @@ import java.util.List;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,7 @@ import android.widget.TextView;
  *  selection implementation. This should work for all
  *  versions of Android down to API v4.
  *  @author Mark Lauman                                  */
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "UnusedReturnValue"})
 public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 	
 	/** Normal adapter that does not indicate choices. */
@@ -73,24 +75,20 @@ public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 	public ArrayCheckAdapter(Context context, int resource,
 			int textViewResourceId, List<T> objects) {
 		super(context, resource, textViewResourceId, objects);
-		if(objects == null) setupSelect(0);
-		else setupSelect(objects.size());
+		setupSelect(objects.size());
 	}
 	public ArrayCheckAdapter(Context context, int resource,
 			int textViewResourceId, T[] objects) {
 		super(context, resource, textViewResourceId, objects);
-		if(objects == null) setupSelect(0);
-		else setupSelect(objects.length);
+		setupSelect(objects.length);
 	}
 	public ArrayCheckAdapter(Context context, int resource, List<T> objects) {
 		super(context, resource, objects);
-		if(objects == null) setupSelect(0);
-		else setupSelect(objects.size());
+		setupSelect(objects.size());
 	}
 	public ArrayCheckAdapter(Context context, int resource, T[] objects) {
 		super(context, resource, objects);
-		if(objects == null) setupSelect(0);
-		else setupSelect(objects.length);
+		setupSelect(objects.length);
 	}
 	private void setupSelect(int length) {
 		mSelected = new ArrayList<>(length);
@@ -108,8 +106,7 @@ public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 
 	@Override
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public void addAll(Collection<? extends T> collection) {
-		if(collection == null) return;
+	public void addAll(@NonNull Collection<? extends T> collection) {
 		ArrayList<Boolean> selections = new ArrayList<>(collection.size());
 		for(int i=0; i<selections.size(); i++)
 			selections.set(i, false);

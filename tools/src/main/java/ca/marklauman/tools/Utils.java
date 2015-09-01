@@ -18,6 +18,7 @@ import android.content.res.TypedArray;
 
 import java.util.Collection;
 
+@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
 public abstract class Utils {
 
     /** Retrieve an array of drawable resources from the xml of the provided {@link Context}.

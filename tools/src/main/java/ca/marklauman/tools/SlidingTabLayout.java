@@ -16,9 +16,9 @@
 package ca.marklauman.tools;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -45,6 +45,7 @@ import android.widget.TextView;
  * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
  * providing the layout ID of your custom layout.
  */
+@SuppressWarnings("WeakerAccess")
 public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
@@ -68,7 +69,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private static final int TAB_VIEW_PADDING_DIPS = 16;
     private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
 
-    private int mTitleOffset;
+    final private int mTitleOffset;
 
     private int mTabViewLayoutId;
     private int mTabViewTextViewId;
@@ -105,14 +106,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
         if(attrs != null) {
             final String android = "http://schemas.android.com/apk/res/android";
             final String resAuto = "http://schemas.android.com/apk/res-auto";
-            Resources res = getResources();
+            Context c = getContext();
 
             int col = attrs.getAttributeResourceValue(android, "textColor", 0);
-            if(col != 0) setTextColors(res.getColor(col));
+            if(col != 0) setTextColors(ContextCompat.getColor(c, col));
             col = attrs.getAttributeResourceValue(resAuto, "dividerColor", 0);
-            if(col != 0) setDividerColors(res.getColor(col));
+            if(col != 0) setDividerColors(ContextCompat.getColor(c, col));
             col = attrs.getAttributeResourceValue(resAuto, "indicatorColor", 0);
-            if(col != 0) setSelectedIndicatorColors(res.getColor(col));
+            if(col != 0) setSelectedIndicatorColors(ContextCompat.getColor(c, col));
         }
 
         if(isInEditMode()) displaySampleData(context);
@@ -196,7 +197,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         mViewPager = viewPager;
         if (viewPager != null) {
-            viewPager.setOnPageChangeListener(new InternalViewPagerListener());
+            viewPager.addOnPageChangeListener(new InternalViewPagerListener());
+
             populateTabStrip();
         }
     }

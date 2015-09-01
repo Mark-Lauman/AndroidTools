@@ -36,6 +36,7 @@ import android.widget.TextView;
  *  Heavily based off code provided by Roman Nurik
  *  <a href="http://code.google.com/p/romannurik-code/source/browse/misc/undobar">here.</a>
  *  @author Mark Lauman                               */
+@SuppressWarnings("WeakerAccess")
 public class FragmentPopup extends Fragment {
 	
 	/** The resource id used for the layout of this fragment.
@@ -80,9 +81,9 @@ public class FragmentPopup extends Fragment {
 	
 	
 	/** Handles hiding the undo bar after x seconds. */
-	private Handler hideHandler = new Handler();
+	final private Handler hideHandler = new Handler();
 	/** Actually does the hiding for the above handler. */
-	private Runnable hideRunnable = new PopupHider();
+	final private Runnable hideRunnable = new PopupHider();
     /** Provides fancy fade transitions for newer
      *  versions of android.                   */
 	private ViewPropertyAnimator hideAnimator = null;

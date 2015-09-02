@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
@@ -308,15 +309,14 @@ public class MultiSelectPreference extends LinearLayout {
 
     private class DialogLauncher implements OnClickListener, QueryListener {
         @Override
-        public void onClick(View v) {
+        public void onClick(View ignored) {
             QueryDialogBuilder builder = new QueryDialogBuilder(getContext());
             builder.setPositiveButton(android.R.string.ok);
             builder.setNegativeButton(android.R.string.cancel);
 
             // The list view from inside the dialog.
-            ListView list = new ListView(getContext());
-            int background = ContextCompat.getColor(getContext(), R.color.background_grey);
-            list.setBackgroundColor(background);
+            View view = View.inflate(getContext(), R.layout.multi_select_preference_list, null);
+            ListView list = (ListView) view.findViewById(android.R.id.list);
             adapter.setSelections(savedSel);
             list.setAdapter(adapter);
             AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
@@ -325,7 +325,7 @@ public class MultiSelectPreference extends LinearLayout {
                 }
             };
             list.setOnItemClickListener(listener);
-            builder.setView(list);
+            builder.setView(view);
 
             builder.setQueryListener(this);
             AlertDialog d = builder.create();

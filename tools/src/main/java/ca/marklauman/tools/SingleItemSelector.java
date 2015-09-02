@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,6 +41,8 @@ public class SingleItemSelector extends AppCompatActivity
 
         // View and action bar setup
         ListView list = new ListView(this);
+        int pad = Utils.dp(this, 16);
+        list.setPadding(pad, 0, pad, 0);
         setContentView(list);
         ActionBar ab = getSupportActionBar();
         if(ab != null)

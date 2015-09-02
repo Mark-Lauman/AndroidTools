@@ -15,6 +15,7 @@ package ca.marklauman.tools;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.util.TypedValue;
 
 import java.util.Collection;
 
@@ -138,5 +139,15 @@ public abstract class Utils {
             if(c == seq.charAt(i)) count++;
         }
         return count;
+    }
+
+
+    /** Provide with a dp measurement, to get a pixel measurement.
+     *  @param c The activity context.
+     *  @param dp The measure in dp
+     *  @return The measure in px. */
+    public static int dp(Context c, int dp) {
+        return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                                                c.getResources().getDisplayMetrics()) + 0.5f);
     }
 }

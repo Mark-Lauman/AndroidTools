@@ -41,8 +41,6 @@ public class SingleItemSelector extends AppCompatActivity
 
         // View and action bar setup
         ListView list = new ListView(this);
-        int pad = Utils.dp(this, 16);
-        list.setPadding(pad, 0, pad, 0);
         setContentView(list);
         ActionBar ab = getSupportActionBar();
         if(ab != null)

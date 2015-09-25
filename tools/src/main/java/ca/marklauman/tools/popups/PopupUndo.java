@@ -82,7 +82,7 @@ public class PopupUndo extends LinearLayout {
                         defStyleAttr, defStyleRes);
         if(ta == null) return;
         try {
-            setText(ta.getString(R.styleable.PopupUndo_text));
+            setText(ta.getString(R.styleable.PopupUndo_message));
             hideDelay = ta.getInt(R.styleable.PopupUndo_hideDelay, DEFAULT_HIDE_DELAY);
         } finally {
             ta.recycle();

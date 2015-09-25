@@ -39,7 +39,7 @@
     </declare-styleable>
 
     <declare-styleable name="PopupUndo">
-        <attr name="text" format="string" />
+        <attr name="message" format="string" />
         <attr name="hideDelay" format="integer" />
     </declare-styleable>
 </resources>

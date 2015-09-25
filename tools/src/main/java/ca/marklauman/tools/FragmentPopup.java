@@ -28,15 +28,15 @@ import android.view.ViewPropertyAnimator;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ca.marklauman.tools.popups.PopupUndo;
+
 /** A basic popup bar for messages.<br/>
- *  For this class to be error free, you must
- *  implement and specify a layout for
- *  {@link #LAYOUT_ID}. Be sure to follow the
- *  recommendations provided in this parameter.<br/>
+ *  Deprecated in favor of {@link PopupUndo}
  *  Heavily based off code provided by Roman Nurik
  *  <a href="http://code.google.com/p/romannurik-code/source/browse/misc/undobar">here.</a>
  *  @author Mark Lauman                               */
 @SuppressWarnings("WeakerAccess")
+@Deprecated
 public class FragmentPopup extends Fragment {
 	
 	/** The resource id used for the layout of this fragment.

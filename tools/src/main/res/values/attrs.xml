@@ -37,4 +37,9 @@
         <attr name="summaryColor" />
         <attr name="intent" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="PopupUndo">
+        <attr name="text" format="string" />
+        <attr name="hideDelay" format="integer" />
+    </declare-styleable>
 </resources>

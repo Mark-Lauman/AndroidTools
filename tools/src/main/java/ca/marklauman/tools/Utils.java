@@ -17,6 +17,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.TypedValue;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 
 @SuppressWarnings({"SameParameterValue", "WeakerAccess"})
@@ -149,5 +152,20 @@ public abstract class Utils {
     public static int dp(Context c, int dp) {
         return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                                                 c.getResources().getDisplayMetrics()) + 0.5f);
+    }
+
+
+    /** Copy one file into another file.
+     *  @param in An input stream positioned at the start of the source file.
+     *  @param outs An output stream positioned at the start of the destination file.
+     *  @throws IOException if any errors occur while copying. */
+    public static void copyFile(InputStream in, OutputStream outs) throws IOException {
+        byte[] buffer = new byte[1024];
+        int length;
+        while(0 < (length = in.read(buffer)))
+            outs.write(buffer, 0, length);
+        outs.flush();
+        outs.close();
+        in.close();
     }
 }

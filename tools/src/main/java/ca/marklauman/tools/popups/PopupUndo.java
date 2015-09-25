@@ -115,23 +115,18 @@ public class PopupUndo extends LinearLayout {
     }
 
 
-    /** Show this popup and display the message.
-     *  @param messageId The resource id of the message to display on the bar.
-     *  @param immediate In Android versions > 4.0 (Ice Cream Sandwich) this indicates
-     *                   whether the transition should be immediate or should fade in slowly.
-     *                   In versions earlier than 4.0, this parameter will be ignored. */
-    public void show(int messageId, boolean immediate) {
-        show(getResources().getString(messageId), immediate);
+    /** Set the display message shown in this popup.
+     *  @param resId The resource id of the text to display. */
+    public void setText(int resId) {
+        mText.setText(resId);
     }
 
 
-    /** Show this popup and display the message.
-     *  @param message The message to display on the bar.
+    /** Show this popup.
      *  @param immediate In Android versions > 4.0 (Ice Cream Sandwich) this indicates
      *                   whether the transition should be immediate or should fade in slowly.
      *                   In versions earlier than 4.0, this parameter will be ignored. */
-    public void show(CharSequence message, boolean immediate) {
-        mText.setText(message);
+    public void show(boolean immediate) {
         hideHandler.removeCallbacks(hideRunnable);
         hideHandler.postDelayed(hideRunnable, hideDelay);
         setVisibility(View.VISIBLE);
@@ -149,7 +144,7 @@ public class PopupUndo extends LinearLayout {
             hideAnimator.cancel();
             hideAnimator.alpha(1)
                         .setDuration(getResources()
-                                        .getInteger(android.R.integer.config_shortAnimTime))
+                                .getInteger(android.R.integer.config_shortAnimTime))
                         .setListener(null);
         } else setAlpha(1);
     }
@@ -177,7 +172,7 @@ public class PopupUndo extends LinearLayout {
             hideAnimator.cancel();
             hideAnimator.alpha(0)
                         .setDuration(getResources()
-                                        .getInteger(android.R.integer.config_shortAnimTime))
+                                .getInteger(android.R.integer.config_shortAnimTime))
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {

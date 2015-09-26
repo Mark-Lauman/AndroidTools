@@ -83,6 +83,8 @@ public class PopupUndo extends LinearLayout {
         if(ta == null) return;
         try {
             setText(ta.getString(R.styleable.PopupUndo_message));
+            mButton.setBackgroundResource(ta.getResourceId(R.styleable.PopupUndo_btnBack,
+                                                           R.drawable.popup_btn_back));
             hideDelay = ta.getInt(R.styleable.PopupUndo_hideDelay, DEFAULT_HIDE_DELAY);
         } finally {
             ta.recycle();

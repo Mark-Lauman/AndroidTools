@@ -78,8 +78,8 @@ public class PopupUndo extends LinearLayout {
         // Load parameters passed via an xml file
         if(rawAttrs == null) return;
         TypedArray ta = context.getTheme()
-                .obtainStyledAttributes(rawAttrs, R.styleable.CheckBoxPreference,
-                        defStyleAttr, defStyleRes);
+                               .obtainStyledAttributes(rawAttrs, R.styleable.PopupUndo,
+                                                       defStyleAttr, defStyleRes);
         if(ta == null) return;
         try {
             setText(ta.getString(R.styleable.PopupUndo_message));

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:minHeight="48dp"
     android:background="#E5535353"
     android:clickable="true"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    tools:ignore="Overdraw">
 
     <TextView
         android:id="@android:id/message"
@@ -32,8 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="?attr/colorControlHighlight"
-        android:drawableLeft="@drawable/ic_undo"
-        android:drawableStart="@drawable/ic_undo"
+        android:drawableLeft="@drawable/ic_undo_white"
+        android:drawableStart="@drawable/ic_undo_white"
         android:drawablePadding="12dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"

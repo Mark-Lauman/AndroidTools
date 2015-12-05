@@ -43,4 +43,8 @@
         <attr name="message" format="string" />
         <attr name="hideDelay" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="SmallNumberPreference">
+        <attr name="text" format="string" />
+    </declare-styleable>
 </resources>

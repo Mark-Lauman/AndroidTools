@@ -1,45 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:gravity="center_vertical" >
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:gravity="center_vertical">
 
-    <ImageButton android:id="@+id/plus"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+    <RelativeLayout android:id="@+id/plus"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
-        android:contentDescription="@string/small_num_pref_plus"
-        android:src="@drawable/ic_core_add" />
+        android:gravity="center_vertical" >
+
+        <ImageButton android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:duplicateParentState="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:contentDescription="@string/small_num_pref_plus"
+            android:src="@drawable/ic_core_add" />
+
+    </RelativeLayout>
+
 
     <TextView android:id="@+id/number"
         android:layout_width="40sp"
-        android:layout_height="48dp"
+        android:layout_height="match_parent"
         android:layout_toLeftOf="@id/plus"
         android:layout_toStartOf="@id/plus"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="center"
         android:text="@string/small_num_pref_def" />
 
-    <ImageButton android:id="@+id/minus"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+
+    <RelativeLayout android:id="@+id/minus"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_toLeftOf="@id/number"
         android:layout_toStartOf="@id/number"
-        android:contentDescription="@string/small_num_pref_minus"
-        android:src="@drawable/ic_core_remove" />
+        android:gravity="center_vertical" >
+
+        <ImageButton android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:duplicateParentState="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:contentDescription="@string/small_num_pref_minus"
+            android:src="@drawable/ic_core_remove" />
+
+    </RelativeLayout>
 
     <TextView android:id="@android:id/text1"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_toLeftOf="@id/minus"
         android:layout_toStartOf="@id/minus"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:paddingTop="10dp"
+        android:gravity="center_vertical"
         android:text="@string/small_num_pref_text" />
 
 </RelativeLayout>

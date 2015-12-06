@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ca.marklauman.tools.R;
@@ -49,9 +48,9 @@ public class SmallNumberPreference extends Preference<Integer> {
         View v = View.inflate(c, R.layout.preference_small_number, null);
         viewText  =    (TextView) v.findViewById(android.R.id.text1);
         viewNum   =    (TextView) v.findViewById(R.id.number);
-        ImageButton button = (ImageButton) v.findViewById(R.id.minus);
+        View button = v.findViewById(R.id.minus);
         button.setOnClickListener(new MinusClick());
-        button = (ImageButton) v.findViewById(R.id.plus);
+        button = v.findViewById(R.id.plus);
         button.setOnClickListener(new PlusClick());
         addView(v);
 

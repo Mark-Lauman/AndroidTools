@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -47,7 +46,7 @@ public class SmallNumberPreference extends Preference<Integer> {
 
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         // Basic view setup
-        View v = View.inflate(c, R.layout.small_number_preference, null);
+        View v = View.inflate(c, R.layout.preference_small_number, null);
         viewText  =    (TextView) v.findViewById(android.R.id.text1);
         viewNum   =    (TextView) v.findViewById(R.id.number);
         ImageButton button = (ImageButton) v.findViewById(R.id.minus);

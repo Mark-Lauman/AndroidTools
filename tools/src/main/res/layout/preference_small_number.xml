@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:gravity="center_vertical" >
 
     <ImageButton android:id="@+id/plus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="16dp"
@@ -16,17 +16,16 @@
 
     <TextView android:id="@+id/number"
         android:layout_width="40sp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_toLeftOf="@id/plus"
         android:layout_toStartOf="@id/plus"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="center"
-        android:paddingTop="10dp"
         android:text="@string/small_num_pref_def" />
 
     <ImageButton android:id="@+id/minus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_toLeftOf="@id/number"
         android:layout_toStartOf="@id/number"
         android:contentDescription="@string/small_num_pref_minus"
@@ -34,7 +33,7 @@
 
     <TextView android:id="@android:id/text1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_toLeftOf="@id/minus"
         android:layout_toStartOf="@id/minus"

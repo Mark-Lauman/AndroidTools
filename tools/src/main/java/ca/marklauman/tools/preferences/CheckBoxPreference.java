@@ -16,10 +16,7 @@ import ca.marklauman.tools.R;
 
 /** An alternative to CheckBoxPreference that can be placed in any view structure.
  *  @author Mark Lauman */
-public class CheckBoxPreference extends LinearLayout {
-
-    /** Key used to save this preference to memory */
-    private String key;
+public class CheckBoxPreference extends Preference<Boolean> {
     /** The checkbox used to display the current state of this preference */
     private CheckBox vCheckBox;
 
@@ -27,18 +24,15 @@ public class CheckBoxPreference extends LinearLayout {
         super(context);
         setup(context, null, 0, 0);
     }
-
     public CheckBoxPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         setup(context, attrs, 0, 0);
     }
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public CheckBoxPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setup(context, attrs, defStyleAttr, 0);
     }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CheckBoxPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -59,27 +53,26 @@ public class CheckBoxPreference extends LinearLayout {
 
         // Get the attribute set
         if(rawAttrs == null) throw new UnsupportedOperationException("CheckBoxPreference "
-                + "must be created with a attribute set.");
+                + "must be created with an attribute set.");
         TypedArray ta = c.getTheme().obtainStyledAttributes(rawAttrs,
                                                             R.styleable.CheckBoxPreference,
                                                             defStyleAttr, defStyleRes);
         if(ta == null) throw new UnsupportedOperationException("CheckBoxPreference "
-                + "must be created with a attribute set.");
+                + "must be created with an attribute set.");
 
         // Read the attributes
         try {
             // Get the key (required)
-            key = ta.getString(R.styleable.CheckBoxPreference_key);
-            if(key == null) throw new IllegalArgumentException("MultiSelectPreference "
-                    + "requires attribute \"key\".");
+            String txt = ta.getString(R.styleable.CheckBoxPreference_key);
+            if(txt != null) setKey(txt);
 
             // TextView attributes
-            String name = ta.getString(R.styleable.CheckBoxPreference_name);
-            vName.setText(name);
+            txt = ta.getString(R.styleable.CheckBoxPreference_name);
+            vName.setText(txt);
             vName.setTextColor(ta.getColor(R.styleable.CheckBoxPreference_nameColor,
                                            vName.getCurrentTextColor()));
-            String summary = ta.getString(R.styleable.CheckBoxPreference_summary);
-            if(summary != null && 0 < summary.length()) vSummary.setText(summary);
+            txt = ta.getString(R.styleable.CheckBoxPreference_summary);
+            if(txt != null && 0 < txt.length()) vSummary.setText(txt);
             else vSummary.setVisibility(GONE);
             vSummary.setTextColor(ta.getColor(R.styleable.CheckBoxPreference_summaryColor,
                                               vSummary.getCurrentTextColor()));
@@ -92,28 +85,35 @@ public class CheckBoxPreference extends LinearLayout {
         } finally {
             ta.recycle();
         }
-
-        // Android Studio can't load preferences.
-        if(isInEditMode()) return;
-
-        reload();
     }
 
     /** Reload the value tied to this preference. */
+    @Override
     public void reload() {
-        // Set the checkbox to the value of the key
-        vCheckBox.setChecked(PreferenceManager.getDefaultSharedPreferences(getContext())
-                                              .getBoolean(key, false));
+        if(key == null || isInEditMode()) return;
+        vCheckBox.setChecked(getSharedPreferences().getBoolean(key, false));
     }
+
+    @Override
+    public void setValue(Boolean value, boolean notify) {
+        vCheckBox.toggle();
+
+    }
+
+    @Override
+    public Boolean getValue() {
+        return null;
+    }
+
 
     private class Toggler implements OnClickListener {
         @Override
         public void onClick(View v) {
             vCheckBox.toggle();
-            PreferenceManager.getDefaultSharedPreferences(getContext())
-                             .edit()
-                             .putBoolean(key, vCheckBox.isChecked())
-                             .commit();
+            getSharedPreferences().edit()
+                                  .putBoolean(key, vCheckBox.isChecked())
+                                  .commit();
+            alertListener();
         }
     }
 }

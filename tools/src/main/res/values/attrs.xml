@@ -46,5 +46,6 @@
 
     <declare-styleable name="SmallNumberPreference">
         <attr name="text" format="string" />
+        <attr name="key" />
     </declare-styleable>
 </resources>

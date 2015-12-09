@@ -61,7 +61,7 @@ public abstract class Preference<T> extends LinearLayout {
      *  If a key is specified, then the preference will save its value to the
      *  default sharedPreference of the activity.
      *  Automatically triggers a reload if the key has changed. */
-    void setKey(String key) {
+    public void setKey(String key) {
         // Check if the keys are the same
         if (key == null) {
             if (this.key == null) return;
@@ -74,7 +74,7 @@ public abstract class Preference<T> extends LinearLayout {
     }
 
     /** Get the key used to save the preference */
-    String getKey() {
+    public String getKey() {
         return key;
     }
 

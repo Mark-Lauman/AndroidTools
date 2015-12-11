@@ -103,7 +103,7 @@ public abstract class Preference<T> extends LinearLayout {
     abstract public T getValue();
 
     /** Interface used for those who wish to listen to a Preference */
-    interface PreferenceListener {
+    public interface PreferenceListener {
         /** Called when a preference is changed.
          * @param id The id passed to the preference when the listener was set. */
         void preferenceChanged(int id);

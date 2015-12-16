@@ -75,7 +75,7 @@ public class MultiSelectPreference extends LinearLayout {
     /** My additions to the basic constructors. */
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         setOnClickListener(new DialogLauncher());
-        View v = View.inflate(c, R.layout.icon_preference, null);
+        View v = View.inflate(c, R.layout.preference_basic, null);
         this.addView(v);
         TextView vName = (TextView) v.findViewById(android.R.id.text1);
         vSummary = (TextView) v.findViewById(android.R.id.text2);

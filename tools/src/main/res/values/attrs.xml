@@ -48,4 +48,12 @@
         <attr name="text" format="string" />
         <attr name="key" />
     </declare-styleable>
+
+    <declare-styleable name="ClickPreference">
+        <attr name="image" />
+        <attr name="name" />
+        <attr name="nameColor" />
+        <attr name="summary" />
+        <attr name="summaryColor" />
+    </declare-styleable>
 </resources>

@@ -41,7 +41,7 @@ public class IntentPreference extends LinearLayout {
     /** My additions to the basic constructors. */
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         // Setup the OnClickListener and View.
-        this.addView(View.inflate(c, R.layout.icon_preference, null));
+        this.addView(View.inflate(c, R.layout.preference_basic, null));
         setOnClickListener(new IntentLauncher());
 
         // Load the attributes

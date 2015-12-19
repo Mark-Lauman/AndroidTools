@@ -28,20 +28,29 @@ public class ExpandedArrayAdapter<T> extends ArrayAdapter<T> {
 
     private int[] icons;
     private int selection;
+    private int noSelBack;
     private int selection_back;
 
     public ExpandedArrayAdapter(Context context, int resource, T[] objects) {
         super(context, resource, objects);
+        noSelBack = android.R.color.transparent;
         icons = null;
         selection = -1;
     }
 
     public void setIcons(int... iconResId) {
         this.icons = iconResId;
+        notifyDataSetChanged();
     }
 
     public void setSelBack(int resId) {
         selection_back = resId;
+        notifyDataSetChanged();
+    }
+
+    public void setNoSelBack(int resId) {
+        noSelBack = resId;
+        notifyDataSetChanged();
     }
 
     public void setSelection(int position) {
@@ -59,7 +68,7 @@ public class ExpandedArrayAdapter<T> extends ArrayAdapter<T> {
         if(icons != null && position < icons.length)
             txt.setCompoundDrawablesWithIntrinsicBounds(icons[position],0,0,0);
         if(selection == position) txt.setBackgroundResource(selection_back);
-        else txt.setBackgroundResource(android.R.color.transparent);
+        else txt.setBackgroundResource(noSelBack);
         return v;
     }
 }

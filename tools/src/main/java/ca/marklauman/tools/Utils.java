@@ -15,7 +15,9 @@ package ca.marklauman.tools;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.TypedValue;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -168,4 +170,17 @@ public abstract class Utils {
         outs.close();
         in.close();
     }
+
+
+    /** Set the drawables on a TextView using valid support methods.
+     * @param view The TextView that the drawables should be applied to.
+     * @param start Resource identifier of the start Drawable.
+     * @param top Resource identifier of the top Drawable.
+     * @param end Resource identifier of the end Drawable.
+     * @param bottom Resource identifier of the bottom Drawable. */
+     public static void setDrawables(TextView view, int start, int top, int end, int bottom) {
+         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+             view.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
+         } else view.setCompoundDrawablesWithIntrinsicBounds(start, top, end, bottom);
+     }
 }

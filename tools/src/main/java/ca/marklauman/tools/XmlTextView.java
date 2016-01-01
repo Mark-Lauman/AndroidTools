@@ -1,3 +1,5 @@
+package ca.marklauman.tools;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -11,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import ca.marklauman.tools.R;
 
 /** Basic view that takes xml strings and parses them to display info.
  *  Must be extended to provide functionality.

@@ -6,7 +6,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -167,7 +166,6 @@ public abstract class XmlTextView extends LinearLayout {
 
             // Determine the name of the tag
             String tag = rawText.substring(start+1, end);
-            Log.d("section", "tag=" + tag);
             if(close) tag = tag.substring(1);
             if(selfClose) tag = tag.substring(0, tag.length()-1);
             tag = tag.trim().toLowerCase();
@@ -177,7 +175,6 @@ public abstract class XmlTextView extends LinearLayout {
                 int oldSize = txt.length();
                 txt.delete(start - offset, end + 1 - offset);
                 tagCompleted(txt, tag, start - offset, start - offset);
-                Log.d("section","offset="+oldSize+"-"+txt.length());
                 offset += oldSize-txt.length();
             } else {
                 // If this is an opening tag, remember it

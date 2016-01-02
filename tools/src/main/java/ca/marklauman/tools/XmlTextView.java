@@ -131,8 +131,11 @@ public abstract class XmlTextView extends LinearLayout {
     }
 
 
-    /** Make a new text section for the view */
+    /** Called when a new TextView is created due to section breaks,
+     *  Makes a new text section for the view. */
     private View newSection(String rawText) {
+        sectionStarted();
+
         // Create the TextView from the provided resource
         View view;
         TextView textView;
@@ -213,12 +216,16 @@ public abstract class XmlTextView extends LinearLayout {
         return view;
     }
 
+
     /** Checks to see if a given tag is active. Useful in
      *  {@link #tagCompleted(SpannableStringBuilder, String, int, int)}. */
     protected boolean tagActive(String tagName) {
         return activeTags.contains(tagName);
     }
 
+
+    /** Called when a new TextView is created for another section (separated by &lt;hr/&gt; tags) */
+    protected abstract void sectionStarted();
 
     /** Called when an xml tag closes.
      *  @param txt The spannable string that will be displayed in the TextView.

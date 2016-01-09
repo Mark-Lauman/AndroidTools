@@ -32,7 +32,7 @@ public abstract class Utils {
      *  These resources are placed in an application's xml files as an array containing
      *  individual resource ids (not an integer-array or a string-array, just an array).
      *  @param c The {@code Context} to search for the array.
-     *  @param resourceId The resource id of an {@code <array>} containing a list of drawables.
+     *  @param resourceId The resource id of an {@code <array>} containing a list of resources.
      *  @return The resource ids of all the drawables in the array, in the order in which
      *  they appear in the xml. Returns null if the array does not exist. */
     public static int[] getResourceArray(Context c, int resourceId) {
@@ -42,9 +42,31 @@ public abstract class Utils {
 
         int[] res = new int[ta.length()];
         for(int i=0; i<ta.length(); i++)
-            res[i] = ta.getResourceId(i, -1);
+            res[i] = ta.getResourceId(i, 0);
 
         ta.recycle();
+        return res;
+    }
+
+    /** Retrieve an array of drawable resources from the xml of the provided {@link Context}.
+     *  These resources are placed in an application's xml files as an array containing
+     *  individual resource ids (not an integer-array or a string-array, just an array).
+     *  @param c The {@code Context} to search for the array.
+     *  @param resourceId The resource id of an {@code <array>} containing a list of resources.
+     *  @return The drawables in the array, in the order in which they appear in the xml.
+     *  Returns null if the array does not exist. */
+    public static Drawable[] getDrawableArray(Context c, int resourceId) {
+        TypedArray ta = c.getResources()
+                         .obtainTypedArray(resourceId);
+        if(ta == null) return null;
+
+        Drawable[] res = new Drawable[ta.length()];
+        try {
+            for(int i=0; i<ta.length(); i++)
+                res[i] = c.getDrawable(ta.getResourceId(i, 0));
+        } finally {
+            ta.recycle();
+        }
         return res;
     }
 

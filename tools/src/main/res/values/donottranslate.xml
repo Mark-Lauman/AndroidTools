@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="small_num_pref_plus">+</string>
-    <string name="small_num_pref_minus">-</string>
+    <string name="small_num_pref_minus">&#8722;</string>
     <string name="small_num_pref_def">0</string>
     <string name="small_num_pref_text">Text Here</string>
 </resources>

@@ -19,7 +19,7 @@ import ca.marklauman.tools.R;
  *  @author Mark Lauman */
 public class IntentPreference extends LinearLayout {
     /** Extra passed to the called activity */
-    public String EXTRA = "extra";
+    public static final String EXTRA = "extra";
 
     /** The class name of the intent to launch. */
     private String toLaunch;

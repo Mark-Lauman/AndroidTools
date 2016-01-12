@@ -18,8 +18,13 @@ import ca.marklauman.tools.R;
  *  and launches an activity when clicked.
  *  @author Mark Lauman */
 public class IntentPreference extends LinearLayout {
+    /** Extra passed to the called activity */
+    public String EXTRA = "extra";
+
     /** The class name of the intent to launch. */
     private String toLaunch;
+    /** The extra to pass with the intent */
+    private int extra = 0;
 
     public IntentPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,6 +67,9 @@ public class IntentPreference extends LinearLayout {
                 throw new UnsupportedOperationException("IntentPreference must be created "
                                                         +" with an intent attribute.");
 
+            // Load the extra to send to the intent
+            extra = ta.getResourceId(R.styleable.IntentPreference_extra, 0);
+
             // Apply the attributes to the name text field
             TextView vText = (TextView) findViewById(android.R.id.text1);
             String name = ta.getString(R.styleable.IntentPreference_name);
@@ -100,6 +108,7 @@ public class IntentPreference extends LinearLayout {
         public void onClick(View view) {
             try {
                 Intent i = new Intent(getContext(), Class.forName(toLaunch));
+                i.putExtra(EXTRA, extra);
                 launchIntent(i);
             } catch (ClassNotFoundException e) {
                 throw new UnsupportedOperationException("IntentPreference has invalid intent "

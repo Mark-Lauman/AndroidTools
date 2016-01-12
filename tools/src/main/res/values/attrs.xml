@@ -36,6 +36,7 @@
         <attr name="summary" />
         <attr name="summaryColor" />
         <attr name="intent" format="string" />
+        <attr name="extra" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="PopupUndo">

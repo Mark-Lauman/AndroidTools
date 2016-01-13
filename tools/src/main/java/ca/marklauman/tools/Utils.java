@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -63,7 +64,7 @@ public abstract class Utils {
         Drawable[] res = new Drawable[ta.length()];
         try {
             for(int i=0; i<ta.length(); i++)
-                res[i] = c.getDrawable(ta.getResourceId(i, 0));
+                res[i] = ContextCompat.getDrawable(c, ta.getResourceId(i, 0));
         } finally {
             ta.recycle();
         }

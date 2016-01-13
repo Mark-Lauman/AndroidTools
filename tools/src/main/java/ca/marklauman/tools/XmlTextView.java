@@ -2,6 +2,7 @@ package ca.marklauman.tools;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableStringBuilder;
@@ -18,8 +19,6 @@ import java.util.ArrayList;
  *  @author Mark Lauman */
 @SuppressWarnings("unused")
 public abstract class XmlTextView extends LinearLayout {
-    /** Context used to construct this view */
-    protected final Context mContext;
     /** The AttributeSet passed to this view */
     private final AttributeSet attrSet;
 
@@ -40,41 +39,49 @@ public abstract class XmlTextView extends LinearLayout {
 
     public XmlTextView(Context context) {
         super(context);
-        mContext = context;
         attrSet = null;
     }
 
     public XmlTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
         attrSet = attrs;
-        parseAttributes();
+        parseAttributes(context, attrs, 0, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public XmlTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;
         attrSet = attrs;
-        parseAttributes();
+        parseAttributes(context, attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public XmlTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        mContext = context;
         attrSet = attrs;
-        parseAttributes();
+        parseAttributes(context, attrs, defStyleAttr, defStyleRes);
     }
 
+
     /** Parse the AttributeSet passed to this preference, and apply it. */
-    private void parseAttributes() {
-        // TODO
+    private void parseAttributes(Context c, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        if(attrs == null) return;
+        TypedArray ta = c.getTheme()
+                         .obtainStyledAttributes(attrs, R.styleable.XmlTextView,
+                                                 defStyleAttr, defStyleRes);
+        if(ta == null) return;
+        try {
+            String txt = ta.getString(R.styleable.XmlTextView_text);
+            if(txt != null) setText(txt);
+        } finally {
+            ta.recycle();
+        }
     }
+
 
     /** Set the text on display */
     public void setText(int resourceId) {
-        setText(mContext.getString(resourceId));
+        setText(getContext().getString(resourceId));
     }
 
 
@@ -114,6 +121,7 @@ public abstract class XmlTextView extends LinearLayout {
     private void rebuildView(@NonNull String text) {
         rawText = text;
         removeAllViews();
+        Context c = getContext();
 
         // If we aren't splitting on the <hr/> tag, this is just one textView
         if(!hrSplit)
@@ -123,7 +131,7 @@ public abstract class XmlTextView extends LinearLayout {
             String[] split = text.split("<hr\\s*/>");
             addView(newSection(split[0]));
             for(int i=1; i<split.length; i++) {
-                addView(View.inflate(mContext, hrRes, null));
+                addView(View.inflate(c, hrRes, null));
                 addView(newSection(split[i]));
             }
         }
@@ -135,17 +143,18 @@ public abstract class XmlTextView extends LinearLayout {
      *  Makes a new text section for the view. */
     private View newSection(String rawText) {
         sectionStarted();
+        Context c = getContext();
 
         // Create the TextView from the provided resource
         View view;
         TextView textView;
         if(textRes != 0) {
-            view = View.inflate(mContext, textRes, null);
+            view = View.inflate(c, textRes, null);
             if(view instanceof TextView)
                 textView = (TextView)view;
             else textView = (TextView)view.findViewById(android.R.id.text1);
         } else {
-            textView = new TextView(mContext, attrSet);
+            textView = new TextView(c, attrSet);
             textView.setGravity(Gravity.CENTER);
             view = textView;
         }

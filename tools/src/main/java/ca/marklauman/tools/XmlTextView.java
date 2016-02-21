@@ -174,12 +174,12 @@ public abstract class XmlTextView extends LinearLayout {
             boolean close = rawText.charAt(start+1) == '/';
             int end = rawText.indexOf(">", start+1);
             if(end < 0) end = rawText.length()-1;
-            boolean selfClose = rawText.charAt(end-1) == '/';
+            boolean selfClose = !close && rawText.charAt(end-1) == '/';
 
             // Determine the name of the tag
             String tag = rawText.substring(start+1, end);
             if(close) tag = tag.substring(1);
-            if(selfClose) tag = tag.substring(0, tag.length()-1);
+            else if(selfClose) tag = tag.substring(0, tag.length()-1);
             tag = tag.trim().toLowerCase();
 
             // If it is self closing remove and handle it

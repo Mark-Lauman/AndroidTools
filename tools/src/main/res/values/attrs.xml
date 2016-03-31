@@ -39,6 +39,17 @@
         <attr name="extra" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="EmailPreference">
+        <attr name="image" />
+        <attr name="name" />
+        <attr name="nameColor" />
+        <attr name="summary" />
+        <attr name="summaryColor" />
+        <attr name="email" format="string" />
+        <attr name="no_email" format="string" />
+        <attr name="subject" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="PopupUndo">
         <attr name="btnBack" format="reference" />
         <attr name="message" format="string" />

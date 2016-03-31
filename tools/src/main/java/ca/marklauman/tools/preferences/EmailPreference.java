@@ -20,11 +20,10 @@ import ca.marklauman.tools.R;
 /** Simple preference that sends an email when clicked.
  *  @author Mark Lauman */
 public class EmailPreference extends LinearLayout {
-    private String name = null;
-    private String email = null;
-    private String subject = null;
-    private String noEmail = null;
-
+    private String name;
+    private String email;
+    private String subject;
+    private String noEmail;
 
     private final OnClickListener clickListener = new OnClickListener() {
         @Override
@@ -73,7 +72,30 @@ public class EmailPreference extends LinearLayout {
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         LayoutInflater.from(c)
                       .inflate(R.layout.preference_basic, this, true);
-        setOnClickListener(clickListener);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Prepare the email intent
+                if(email == null) return;
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setType("message/rfc822");
+                String data = "mailto:"+ Uri.encode(email);
+                if(subject!=null)
+                    data += "?subject=" + Uri.encode(subject);
+                intent.setData(Uri.parse(data));
+
+                // Launch the email dialog
+                try { getContext().startActivity(Intent.createChooser(intent, name));
+                } catch(ActivityNotFoundException ex) {
+                    // Display a dialog if no email programs are available
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle(name)
+                            .setMessage(noEmail)
+                            .create()
+                            .show();
+                }
+            }
+        });
 
         if(rawAttrs == null) return;
         TypedArray ta = c.getTheme()

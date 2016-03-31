@@ -98,7 +98,7 @@ public class EmailPreference extends LinearLayout {
 
             // Apply the icon
             ImageView vImg = ((ImageView)findViewById(android.R.id.icon2));
-            int imgRes = ta.getResourceId(R.styleable.IntentPreference_image, 0);
+            int imgRes = ta.getResourceId(R.styleable.EmailPreference_image, 0);
             if(imgRes != 0) vImg.setImageResource(imgRes);
             else findViewById(android.R.id.icon1).setVisibility(GONE);
         } finally {

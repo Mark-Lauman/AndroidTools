@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
-def libVersionCode = 94
-def libVersion = "2.5.1"
+def libVersionCode = 96
+def libVersion = "2.5.3"
 
 android {
     compileSdkVersion 23
@@ -27,7 +27,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
 }
 
 //noinspection GroovyMissingReturnStatement

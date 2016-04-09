@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,8 +29,11 @@ public class EmailPreference extends LinearLayout {
     private final OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(email == null) {
+                Log.e("EmailPreference", "No email specified");
+                return;
+            }
             // Prepare the email intent
-            if(email == null) return;
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setType("message/rfc822");
             String data = "mailto:"+ Uri.encode(email);
@@ -72,30 +76,7 @@ public class EmailPreference extends LinearLayout {
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         LayoutInflater.from(c)
                       .inflate(R.layout.preference_basic, this, true);
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Prepare the email intent
-                if(email == null) return;
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setType("message/rfc822");
-                String data = "mailto:"+ Uri.encode(email);
-                if(subject!=null)
-                    data += "?subject=" + Uri.encode(subject);
-                intent.setData(Uri.parse(data));
-
-                // Launch the email dialog
-                try { getContext().startActivity(Intent.createChooser(intent, name));
-                } catch(ActivityNotFoundException ex) {
-                    // Display a dialog if no email programs are available
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle(name)
-                            .setMessage(noEmail)
-                            .create()
-                            .show();
-                }
-            }
-        });
+        setOnClickListener(clickListener);
 
         if(rawAttrs == null) return;
         TypedArray ta = c.getTheme()

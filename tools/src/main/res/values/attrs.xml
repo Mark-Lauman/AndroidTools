@@ -69,6 +69,15 @@
         <attr name="summaryColor" />
     </declare-styleable>
 
+    <declare-styleable name="PricePreference">
+        <attr name="image" />
+        <attr name="name" />
+        <attr name="nameColor" />
+        <attr name="summary" />
+        <attr name="summaryColor" />
+        <attr name="price" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="XmlTextView">
         <attr name="text" />
     </declare-styleable>

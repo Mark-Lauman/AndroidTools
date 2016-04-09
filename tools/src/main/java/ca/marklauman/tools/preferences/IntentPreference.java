@@ -97,23 +97,29 @@ public class IntentPreference extends LinearLayout {
         }
     }
 
-    /** Used to launch the intent passed to this preference. */
-    protected void launchIntent(Intent i) {
-        getContext().startActivity(i);
+    /** Launch the intent bound to this preference. */
+    public void launchIntent() {
+        getContext().startActivity(getIntent());
+    }
+
+
+    /** Get the intent bound to this preference */
+    public Intent getIntent() {
+        try {
+            Intent i = new Intent(getContext(), Class.forName(toLaunch));
+            i.putExtra(EXTRA, extra);
+            return i;
+        } catch (ClassNotFoundException e) {
+            throw new UnsupportedOperationException("IntentPreference has invalid intent "
+                                                    +"attribute \""+toLaunch+"\"");
+        }
     }
 
 
     private class IntentLauncher implements OnClickListener {
         @Override
         public void onClick(View view) {
-            try {
-                Intent i = new Intent(getContext(), Class.forName(toLaunch));
-                i.putExtra(EXTRA, extra);
-                launchIntent(i);
-            } catch (ClassNotFoundException e) {
-                throw new UnsupportedOperationException("IntentPreference has invalid intent "
-                        +"attribute \""+toLaunch+"\"");
-            }
+            launchIntent();
         }
     }
 }

@@ -15,8 +15,10 @@ import ca.marklauman.tools.R;
 /** Simple preference that displays a price.
  *  An OnClickListener should be used for this preference to respond to clicks.
  *  @author Mark Lauman */
+@SuppressWarnings("unused")
 public class PricePreference extends LinearLayout {
 
+    /** TextView used to display the price */
     private TextView vPrice;
 
     public PricePreference(Context context, AttributeSet attrs) {
@@ -48,20 +50,20 @@ public class PricePreference extends LinearLayout {
         // Apply the attributes
         try {
             // Apply the price to its field
-            vPrice = (TextView)findViewById(R.id.price);
+            vPrice = (TextView)findViewById(android.R.id.text1);
             String price = ta.getString(R.styleable.PricePreference_price);
             if(price != null && 0 < price.length())
                 vPrice.setText(price);
 
             // Apply the attributes to the name text field
-            TextView vText = (TextView) findViewById(android.R.id.text1);
+            TextView vText = (TextView) findViewById(android.R.id.title);
             String name = ta.getString(R.styleable.PricePreference_name);
             vText.setText(name);
             vText.setTextColor(ta.getColor(R.styleable.PricePreference_nameColor,
                     vText.getCurrentTextColor()));
 
             // Apply the attributes to the summary text field
-            vText = (TextView) findViewById(android.R.id.text2);
+            vText = (TextView) findViewById(android.R.id.summary);
             String summary = ta.getString(R.styleable.PricePreference_summary);
             if(summary != null && 0 < summary.length())
                 vText.setText(summary);

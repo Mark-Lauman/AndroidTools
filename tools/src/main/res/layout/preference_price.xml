@@ -29,7 +29,7 @@
         android:layout_toRightOf="@android:id/icon1"
         android:layout_toEndOf="@android:id/icon1" >
 
-        <TextView android:id="@+id/price"
+        <TextView android:id="@android:id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -37,11 +37,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-        <TextView android:id="@android:id/text1"
+        <TextView android:id="@android:id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/price"
-            android:layout_toStartOf="@id/price"
+            android:layout_toLeftOf="@android:id/text1"
+            android:layout_toStartOf="@android:id/text1"
             android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
             android:textSize="16sp"
@@ -49,7 +49,7 @@
             android:singleLine="true"
             android:ellipsize="end" />
 
-        <TextView android:id="@android:id/text2"
+        <TextView android:id="@android:id/summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"

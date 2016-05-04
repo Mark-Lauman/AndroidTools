@@ -13,6 +13,7 @@ import ca.marklauman.tools.R;
 
 /** Simple preference that alerts its listener when clicked.
  *  @author Mark Lauman */
+@SuppressWarnings({"unused"})
 public class ClickPreference extends Preference<Void> {
 
     public ClickPreference(Context context, AttributeSet attrs) {

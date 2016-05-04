@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 
-@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
 public abstract class Utils {
 
     /** Retrieve an array of resource ids from the xml of the provided {@link Context}.

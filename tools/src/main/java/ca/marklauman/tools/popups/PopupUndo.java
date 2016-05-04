@@ -19,6 +19,7 @@ import ca.marklauman.tools.R;
  *  Heavily based off code provided by Roman Nurik
  *  <a href="http://code.google.com/p/romannurik-code/source/browse/misc/undobar">here.</a>
  *  @author Mark Lauman */
+@SuppressWarnings("WeakerAccess")
 public class PopupUndo extends LinearLayout {
 
     /** Default amount of time before the popup is hidden (in ms) */

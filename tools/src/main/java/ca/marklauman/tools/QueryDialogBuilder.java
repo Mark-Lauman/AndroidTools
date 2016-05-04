@@ -21,7 +21,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.support.annotation.NonNull;
 
-@SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
+@SuppressWarnings({"SameParameterValue", "UnusedReturnValue", "unused"})
 public class QueryDialogBuilder extends Builder {
 	private boolean pos_set = false;
 	private boolean neg_set = false;

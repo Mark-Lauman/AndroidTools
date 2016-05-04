@@ -17,6 +17,7 @@ import ca.marklauman.tools.R;
  *  Does not save data, or do anything else, just looks like a preference,
  *  and launches an activity when clicked.
  *  @author Mark Lauman */
+@SuppressWarnings("WeakerAccess")
 public class IntentPreference extends LinearLayout {
     /** Extra passed to the called activity */
     public static final String EXTRA = "extra";

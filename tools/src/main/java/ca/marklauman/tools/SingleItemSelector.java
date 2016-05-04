@@ -17,10 +17,10 @@ import java.security.InvalidParameterException;
  *  when they click one. Return codes are provided by {@link #PARAM_RETURN},
  *  and are always Strings. The names for those codes are set by {@link #PARAM_DISPLAY}.
  *  The activity title is set by {@link #PARAM_TITLE}. */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 @SuppressLint("Registered")
 public class SingleItemSelector extends AppCompatActivity
-        implements ListView.OnItemClickListener {
+                                implements ListView.OnItemClickListener {
     /** The title to display on the activity's action bar */
     public static final String PARAM_TITLE = "title";
     /** The array of options to choose from (as displayed) */

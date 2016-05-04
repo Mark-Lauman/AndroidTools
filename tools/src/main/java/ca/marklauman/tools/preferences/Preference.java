@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 /** Generic structure for a preference. */
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
 public abstract class Preference<T> extends LinearLayout {
 
     /** The listener to be notified if this preference changes */

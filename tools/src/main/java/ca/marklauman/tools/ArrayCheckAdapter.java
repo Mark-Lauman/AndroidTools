@@ -36,7 +36,7 @@ import android.widget.TextView;
  *  selection implementation. This should work for all
  *  versions of Android down to API v4.
  *  @author Mark Lauman                                  */
-@SuppressWarnings({"SameParameterValue", "WeakerAccess", "UnusedReturnValue"})
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "UnusedReturnValue", "unused"})
 public class ArrayCheckAdapter<T> extends ArrayAdapter<T> {
 	
 	/** Normal adapter that does not indicate choices. */

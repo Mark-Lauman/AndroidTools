@@ -10,6 +10,7 @@ import android.widget.TextView;
 /** Simple class used to make adding html to TextViews easier.
  *  Any text assigned to this view at construction will be parsed as html.
  *  @author Mark Lauman */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class HtmlTextView extends TextView {
     public HtmlTextView(Context context) {
         super(context);

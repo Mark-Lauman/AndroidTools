@@ -23,7 +23,7 @@ import android.widget.TextView;
   * will be placed to the left of the {@code android.R.id.text1}
   * {@link TextView}. The background of that TextView will change
   * color when selected.                                       */
-@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
 public class ExpandedArrayAdapter<T> extends ArrayAdapter<T> {
 
     private int[] icons;

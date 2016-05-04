@@ -31,7 +31,7 @@ import android.widget.ListView;
  *  selection implementation. This should work for all
  *  versions of Android down to API v4.
  *  @author Mark Lauman                                  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class CursorSelAdapter extends SimpleCursorAdapter {
 	
 	/** Default background color id for selected items */

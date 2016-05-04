@@ -92,7 +92,7 @@ public abstract class XmlTextView extends LinearLayout {
         rebuildView(text);
     }
 
-    /** If set to true, the textview will split and add a horizontal rule when it encounters
+    /** If set to true, the TextView will split and add a horizontal rule when it encounters
      *  the xml entity "&lt;hr/&gt;" or "&lt;hr /&gt;".<br/>
      *  Defaults to {@code true} */
     public void setHrSplit(boolean shouldSplit) {

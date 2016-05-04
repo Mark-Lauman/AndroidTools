@@ -9,4 +9,5 @@ import android.widget.ListAdapter;
  *  Classes that implement this can be used in ListView.setAdapter(),
  *  LoaderManager.initLoader() and SimpleCursorAdapter.setViewBinder()
  *  @author Mark Lauman */
+@SuppressWarnings({"unused"})
 public interface CursorHandler  extends ListAdapter, ViewBinder, LoaderCallbacks<Cursor> {}

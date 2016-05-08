@@ -33,7 +33,7 @@ public class TouchCallback extends BasicTouchAdapter.Callback {
      *                    If 0, items cannot be swiped to dismiss them. */
     public TouchCallback(int dragFlags, int swipeFlags) {
         moveFlags = makeMovementFlags(dragFlags, swipeFlags);
-        hasDismiss = 0 == swipeFlags;
+        hasDismiss = 0 != swipeFlags;
         mAdapter = null;
     }
 

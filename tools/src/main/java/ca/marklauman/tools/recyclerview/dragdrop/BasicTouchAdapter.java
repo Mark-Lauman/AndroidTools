@@ -43,6 +43,12 @@ public abstract class BasicTouchAdapter<T extends RecyclerView.ViewHolder>
     }
 
 
+    /** Start swiping the passed ViewHolder. */
+    public void startSwipe(T viewHolder) {
+        mItemTouchHelper.startSwipe(viewHolder);
+    }
+
+
     /** Used to define the mouse callbacks used to trigger drag events */
     public static abstract class Callback extends ItemTouchHelper.Callback {
         public abstract void attachAdapter(BasicTouchAdapter adapter);

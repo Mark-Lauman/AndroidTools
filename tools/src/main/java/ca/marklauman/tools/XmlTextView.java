@@ -31,6 +31,8 @@ public abstract class XmlTextView extends LinearLayout {
     private String rawText = "";
     /** True if we should split the text on "<hr/>" */
     private boolean hrSplit = true;
+    /** Current TextView being used to display this part of the display string. */
+    private TextView textView;
 
     /** Resource used for TextView elements */
     private int textRes = 0;
@@ -147,7 +149,6 @@ public abstract class XmlTextView extends LinearLayout {
 
         // Create the TextView from the provided resource
         View view;
-        TextView textView;
         if(textRes != 0) {
             view = View.inflate(c, textRes, null);
             if(view instanceof TextView)
@@ -223,6 +224,11 @@ public abstract class XmlTextView extends LinearLayout {
 
         textView.setText(txt, TextView.BufferType.SPANNABLE);
         return view;
+    }
+
+    /** Get the line height of the active text section */
+    public int getLineHeight() {
+        return textView == null ? 0 : textView.getLineHeight();
     }
 
 

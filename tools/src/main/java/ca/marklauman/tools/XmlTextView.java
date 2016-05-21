@@ -228,7 +228,7 @@ public abstract class XmlTextView extends LinearLayout {
 
     /** Get the line height of the active text section */
     public int getLineHeight() {
-        return textView == null ? 0 : (int)(textView.getPaint().ascent() + 0.5f);
+        return textView == null ? 0 : (int)(-textView.getPaint().ascent() + 0.5f);
     }
 
 

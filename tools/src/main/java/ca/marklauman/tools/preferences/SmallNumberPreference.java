@@ -45,14 +45,13 @@ public class SmallNumberPreference extends Preference<Integer> {
 
     private void setup(Context c, AttributeSet rawAttrs, int defStyleAttr, int defStyleRes) {
         // Basic view setup
-        View v = View.inflate(c, R.layout.preference_small_number, null);
-        viewText  =    (TextView) v.findViewById(android.R.id.text1);
-        viewNum   =    (TextView) v.findViewById(R.id.number);
-        View button = v.findViewById(R.id.minus);
+        inflate(c, R.layout.preference_small_number, this);
+        viewText  =    (TextView) findViewById(android.R.id.text1);
+        viewNum   =    (TextView) findViewById(android.R.id.text2);
+        View button = findViewById(android.R.id.button2);
         button.setOnClickListener(new MinusClick());
-        button = v.findViewById(R.id.plus);
+        button = findViewById(android.R.id.button1);
         button.setOnClickListener(new PlusClick());
-        addView(v);
 
         // Load attributes
         if(rawAttrs == null) return;

@@ -86,6 +86,11 @@ public class IconSelectAdapter extends RecyclerView.Adapter<IconSelectAdapter.Vi
         notifyItemChanged(mSelect);
     }
 
+    /** Get the currently selected item */
+    public int getSelect() {
+        return mSelect;
+    }
+
     /** Set a listener that will be notified when items are clicked. */
     public void setListener(ClickListener listener) {
         mListen = listener;
